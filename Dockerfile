@@ -1,37 +1,38 @@
-FROM php:7.4-fpm-alpine
+ARG PHP_VERSION=7.4
+FROM php:${PHP_VERSION}-fpm-alpine
 
 # TODO clean this up
 RUN set -ex && \
     apk --no-cache add \
-    postgresql-client \
-    postgresql-dev \
-    autoconf \
-    g++ \
-    make \
-    freetype \
-    libzip-dev \
-    libpng \
-    libjpeg-turbo \
-    freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev && \
+        postgresql-client \
+        postgresql-dev \
+        autoconf \
+        g++ \
+        make \
+        freetype \
+        libzip-dev \
+        libpng \
+        libjpeg-turbo \
+        freetype-dev \
+        libpng-dev \
+        libjpeg-turbo-dev && \
     docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
-    gd \
-    pdo \
-    pdo_pgsql \
-    intl \
-    opcache \
-    zip && \
-    pecl install redis && \
-    docker-php-ext-enable redis && \
-    apk del --no-cache \
-    freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    autoconf \
-    g++ \
-    make
+        gd \
+        pdo \
+        pdo_pgsql \
+        intl \
+        opcache \
+        zip && \
+        pecl install redis && \
+        docker-php-ext-enable redis && \
+        apk del --no-cache \
+        freetype-dev \
+        libpng-dev \
+        libjpeg-turbo-dev \
+        autoconf \
+        g++ \
+        make
 
 # setup opcache for environment variables
 ARG PHP_OPCACHE_VALIDATE_TIMESTAMPS_ARG="0"
@@ -49,11 +50,11 @@ COPY craft-cms.ini /usr/local/etc/php
 # make the directories and set permissions
 RUN mkdir -p /app
 
-# set the working directory for conveinence
-WORKDIR /app
-
 # set the permissions on the
 RUN chown -R www-data:www-data /app
 
-# run the container as the www-data user
+# set the working directory for conveinence
+WORKDIR /app
+
+# run container as the www-data user
 USER www-data

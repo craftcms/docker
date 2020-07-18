@@ -6,4 +6,4 @@ IMAGE ?= ${ORGANIZATION}/${PROJECT}:${TAG}
 .PHONY: build
 
 build:
-	docker build -t $(ORGANIZATION)/$(PROJECT):$(TAG) .
+	docker build --build-arg PHP_VERSION=$(TAG) -t $(IMAGE) .
