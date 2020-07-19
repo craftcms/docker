@@ -2,7 +2,7 @@
 
 ## Example Usage
 
-```docker
+```dockerfile
 # use a multi-stage build for dependencies
 FROM composer:1 as vendor
 COPY composer.json composer.json
