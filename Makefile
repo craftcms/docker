@@ -7,3 +7,5 @@ IMAGE ?= ${ORGANIZATION}/${PROJECT}:${TAG}
 
 build:
 	docker build --build-arg PHP_VERSION=$(TAG) -t $(IMAGE) .
+dev:
+	docker build -f dev.Dockerfile --build-arg PHP_VERSION=$(TAG) -t $(IMAGE)-dev .
