@@ -1,5 +1,14 @@
 # Craft Docker Images
 
+## Images
+
+| Image                      | Purpose           |
+|----------------------------|-------------------|
+| `craftcms/php-fpm:7.4`     | Production use    |
+| `craftcms/php-fpm:7.4-dev` | Local development |
+| `craftcms/php-fpm:7.3`     | Production use    |
+| `craftcms/php-fpm:7.3-dev` | Local development |
+
 ## Example Usage
 
 ```dockerfile
