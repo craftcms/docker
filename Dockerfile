@@ -1,5 +1,6 @@
 ARG PHP_VERSION=7.4
-FROM php:${PHP_VERSION}-fpm-alpine
+ARG PROJECT_TYPE=fpm
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # TODO clean this up
 RUN set -ex && \
@@ -20,6 +21,7 @@ RUN set -ex && \
     docker-php-ext-install -j$(nproc) \
         gd \
         pdo \
+        pdo_mysql \
         pdo_pgsql \
         intl \
         opcache \

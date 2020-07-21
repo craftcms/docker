@@ -1,5 +1,6 @@
 ARG PHP_VERSION=7.4
-FROM php:${PHP_VERSION}-fpm-alpine
+ARG PROJECT_TYPE=fpm
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 USER root
 
