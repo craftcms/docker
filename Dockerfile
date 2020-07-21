@@ -2,7 +2,6 @@ ARG PHP_VERSION=7.4
 ARG PROJECT_TYPE=fpm
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
-# TODO clean this up
 RUN set -ex && \
     apk --no-cache add \
         postgresql-client \
