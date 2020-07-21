@@ -1,6 +1,6 @@
 ARG PHP_VERSION=7.4
 ARG PROJECT_TYPE=fpm
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
+FROM craftcms/php-${PROJECT_TYPE}:${PHP_VERSION}-dev
 
 USER root
 
