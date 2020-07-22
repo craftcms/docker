@@ -186,7 +186,7 @@ services:
       - .:/app
     env_file: .env
     environment:
-      PHP_MEMORY_LIMIT: 256M
+      PHP_MEMORY_LIMIT: 512M
   # ...
 ```
 
