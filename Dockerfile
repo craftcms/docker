@@ -46,7 +46,7 @@ ENV PHP_OPCACHE_MEMORY_CONSUMPTION=$PHP_OPCACHE_MEMORY_CONSUMPTION_ARG
 ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 
 # copy custom.ini settings
-COPY craft-cms.ini /usr/local/etc/php
+COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
 # make the directories and set permissions
 RUN mkdir -p /app
