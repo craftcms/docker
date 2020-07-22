@@ -1,5 +1,7 @@
 # Craft Docker Images
 
+These images are used for a baseline to extend for your Docker deployments.
+
 ## Images
 
 | Image                      | Purpose           |
@@ -46,10 +48,10 @@ The image is set to run as the user `www-data`. There is a directory already pre
 Running Docker locally is recommended if you are shipping your project to a Docker based envrionment such as Amazon Web Services Elastic Container Services (ECS). The following Docker Compose file will setup your local environment with the following:
 
 1. `php-fpm` service that will handle running PHP
-2. An `nginx` service that will accept HTTP requests on port 8000
-3. A `mysql` service that will store your content
-4. A `queue` service that will run the queue locally
-5. A `redis` service that will handle queue and caching
+2. `nginx` service that will accept HTTP requests on port 8000
+3. `mysql` service that will store your content
+4. `queue` service that will run the queue locally
+5. `redis` service that will handle queue and caching
 
 ```yaml
 version: "3.6"
@@ -59,16 +61,19 @@ services:
     volumes:
       - .:/app
     env_file: .env
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - 8000:80
+    volumes:
+      - ./path/to/nginx.conf:/etc/nginx/conf.d/default.conf
+      - .:/app
   queue:
     image: craftcms/cli:7.4-dev
     volumes:
       - .:/app
     env_file: .env
     command: ["./craft", "queue/listen"]
-  nginx:
-    image: nginx:stable-alpine
-    ports:
-      - 8000:80
   mysql:
     image: mysql:8.0
     ports:
@@ -86,6 +91,67 @@ services:
       - 6379:6379
 volumes:
   db_data:
+```
+
+You will need to provide an nginx.conf file that points the `php-fpm` service, not `localhost` or `127.0.0.1`. We can borrow the following example from [nystudio107/nginx-craft](https://github.com/nystudio107/nginx-craft) in the `sites-available/basic_localdev.com.conf` and update it to use
+
+```nginx
+# removed comments for readability except where we modify the config
+server {
+    listen 80;
+    listen [::]:80;
+
+    server_name _;
+    # we change the root to match the root for the php-fpm service
+    root /app/web;
+    index index.html index.htm index.php;
+    charset utf-8;
+
+    gzip_static  on;
+
+    ssi on;
+
+    client_max_body_size 0;
+
+    error_page 404 /index.php?$query_string;
+
+    access_log off;
+    error_log /dev/stdout info;
+
+    # Root directory location handler
+    location / {
+        try_files $uri/index.html $uri $uri/ /index.php?$query_string;
+    }
+
+    # php-fpm configuration
+    location ~ [^/]\.php(/|$) {
+        try_files $uri $uri/ /index.php?$query_string;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        # instead of localhost of 127.0.0.1, we use the name of the service for php-fpm
+        fastcgi_pass php-fpm:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_param HTTP_PROXY "";
+
+        # Don't allow browser caching of dynamically generated content
+        add_header Last-Modified $date_gmt;
+        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
+        if_modified_since off;
+        expires off;
+        etag off;
+
+        fastcgi_intercept_errors off;
+        fastcgi_buffer_size 16k;
+        fastcgi_buffers 4 16k;
+        fastcgi_connect_timeout 300;
+        fastcgi_send_timeout 300;
+        fastcgi_read_timeout 300;
+    }
+}
+
 ```
 
 ## Installing Extensions
