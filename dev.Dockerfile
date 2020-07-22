@@ -1,6 +1,6 @@
 ARG PHP_VERSION=7.4
 ARG PROJECT_TYPE=php-fpm
-FROM craftcms/${PROJECT_TYPE}:${PHP_VERSION}-dev
+FROM craftcms/${PROJECT_TYPE}:${PHP_VERSION}
 
 USER root
 
