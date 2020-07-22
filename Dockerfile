@@ -28,7 +28,7 @@ RUN set -ex && \
         opcache \
         zip && \
     pecl install imagick redis && \
-    docker-php-ext-enable redis && \
+    docker-php-ext-enable imagick redis && \
     apk del --no-cache \
         freetype-dev \
         libpng-dev \
