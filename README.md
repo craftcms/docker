@@ -170,3 +170,40 @@ USER www-data
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
 COPY --chown=www-data:www-data . .
 ```
+
+## Customizing PHP Settings
+
+Some PHP settings may be customized by setting environment variables for the `php-fpm` or `cli` images.
+
+In this example, we’re setting the PHP memory limit to `512M` rather than the default `256M`:
+
+```yaml
+version: "3.6"
+services:
+  php-fpm:
+    image: craftcms/php-fpm:7.4-dev
+    volumes:
+      - .:/app
+    env_file: .env
+    environment:
+      PHP_MEMORY_LIMIT: 256M
+  # ...
+```
+
+### Customizable Settings
+
+| PHP Setting                       | Environment Variable                  | Default Value |
+| --------------------------------- | ------------------------------------- | ------------- |
+| `memory_limit`                    | `PHP_MEMORY_LIMIT`                    | `256M`        |
+| `max_execution_time`              | `PHP_MAX_EXECUTION_TIME`              | `120`         |
+| `upload_max_filesize`             | `PHP_UPLOAD_MAX_FILESIZE`             | `20M`         |
+| `max_input_vars`                  | `PHP_MAX_INPUT_VARS`                  | `1000`        |
+| `post_max_size`                   | `PHP_POST_MAX_SIZE`                   | `8M`          |
+| `opcache.enable`                  | `PHP_OPCACHE_ENABLE`                  | `1`           |
+| `opcache.revalidate_freq`         | `PHP_OPCACHE_REVALIDATE_FREQ`         | `0`           |
+| `opcache.validate_timestamps`     | `PHP_OPCACHE_VALIDATE_TIMESTAMPS`     | `0`           |
+| `opcache.max_accelerated_files`   | `PHP_OPCACHE_MAX_ACCELERATED_FILES`   | `10000`       |
+| `opcache.memory_consumption`      | `PHP_OPCACHE_MEMORY_CONSUMPTION`      | `256`         |
+| `opcache.max_wasted_percentage`   | `PHP_OPCACHE_MAX_WASTED_PERCENTAGE`   | `10`          |
+| `opcache.interned_strings_buffer` | `PHP_OPCACHE_INTERNED_STRINGS_BUFFER` | `16`          |
+| `opcache.fast_shutdown`           | `PHP_OPCACHE_FAST_SHUTDOWN`           | `1`           |
