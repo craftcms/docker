@@ -15,7 +15,9 @@ RUN set -ex && \
         libjpeg-turbo \
         freetype-dev \
         libpng-dev \
-        libjpeg-turbo-dev && \
+        libjpeg-turbo-dev \
+        imagemagick-dev \
+        imagemagick-libs && \
     docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
         gd \
@@ -25,15 +27,16 @@ RUN set -ex && \
         intl \
         opcache \
         zip && \
-        pecl install redis && \
-        docker-php-ext-enable redis && \
-        apk del --no-cache \
+    pecl install imagick redis && \
+    docker-php-ext-enable redis && \
+    apk del --no-cache \
         freetype-dev \
         libpng-dev \
         libjpeg-turbo-dev \
         autoconf \
         g++ \
-        make
+        make \
+        imagemagick-dev
 
 # setup general options for environment variables
 ARG PHP_MEMORY_LIMIT_ARG="256M"
