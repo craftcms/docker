@@ -4,16 +4,16 @@ These images are provided as a starting point for your Docker-based Craft CMS de
 
 ## Images
 
-| Image                      | Purpose           |
-|----------------------------|-------------------|
-| `craftcms/php-fpm:7.4`     | Production use    |
-| `craftcms/php-fpm:7.4-dev` | Local development |
-| `craftcms/cli:7.4`         | Production use    |
-| `craftcms/cli:7.4-dev`     | Local development |
-| `craftcms/php-fpm:7.3`     | Production use    |
-| `craftcms/php-fpm:7.3-dev` | Local development |
-| `craftcms/cli:7.3`         | Production use    |
-| `craftcms/cli:7.3-dev`     | Local development |
+| Image                      | Use   | Environment   |
+|----------------------------|-------|---------------|
+| `craftcms/php-fpm:7.4`     | web   | `production`  |
+| `craftcms/php-fpm:7.4-dev` | web   | `development` |
+| `craftcms/php-fpm:7.3`     | web   | `production`  |
+| `craftcms/php-fpm:7.3-dev` | web   | `development` |
+| `craftcms/cli:7.4`         | queue | `production`  |
+| `craftcms/cli:7.4-dev`     | queue | `development` |
+| `craftcms/cli:7.3`         | queue | `production`  |
+| `craftcms/cli:7.3-dev`     | queue | `development` |
 
 ## Usage
 
@@ -193,7 +193,7 @@ services:
 ### Customizable Settings
 
 | PHP Setting                       | Environment Variable                  | Default Value |
-| --------------------------------- | ------------------------------------- | ------------- |
+|-----------------------------------|---------------------------------------|---------------|
 | `memory_limit`                    | `PHP_MEMORY_LIMIT`                    | `256M`        |
 | `max_execution_time`              | `PHP_MAX_EXECUTION_TIME`              | `120`         |
 | `upload_max_filesize`             | `PHP_UPLOAD_MAX_FILESIZE`             | `20M`         |
