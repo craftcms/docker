@@ -1,5 +1,8 @@
 # Craft Docker Images
 
+[![craftcms/php-fpm](https://img.shields.io/docker/pulls/craftcms/php-fpm.svg)](https://hub.docker.com/r/craftcms/php-fpm)
+[![craftcms/cli](https://img.shields.io/docker/pulls/craftcms/cli.svg)](https://hub.docker.com/r/craftcms/cli)
+
 These images are provided as a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and preconfigured to meet Craft’s requirements in production and development environments.
 
 ## Images
