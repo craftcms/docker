@@ -16,6 +16,7 @@ RUN set -ex && \
         freetype-dev \
         libpng-dev \
         libjpeg-turbo-dev \
+        imagemagick \
         imagemagick-dev \
         imagemagick-libs && \
     docker-php-ext-configure gd && \
