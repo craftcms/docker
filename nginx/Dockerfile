@@ -7,14 +7,15 @@ USER root
 RUN apk update --no-cache && apk add --no-cache supervisor nginx
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 COPY nginx.conf /etc/nginx/nginx.conf
-RUN rm /etc/nginx/conf.d/default.conf
+COPY craftcms/general.conf /etc/nginx/craftcms/
+COPY craftcms/php_fastcgi.conf /etc/nginx/craftcms/
+COPY craftcms/security.conf /etc/nginx/craftcms/
+COPY default.conf /etc/nginx/conf.d/default.conf
 RUN touch /run/nginx.pid
 RUN touch /run/supervisord.pid
 RUN chown www-data /run/nginx.pid
 RUN chown www-data /run/supervisord.pid
 RUN chown -R www-data:www-data /var/lib/nginx/logs/
-RUN touch /var/lib/nginx/logs/error.log
-RUN chown www-data /var/lib/nginx/logs/error.log
 USER www-data
 
 EXPOSE ${PORT}
