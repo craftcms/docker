@@ -1,6 +1,10 @@
 ARG PHP_VERSION=7.4
 ARG PROJECT_TYPE=php-fpm
+
 FROM craftcms/${PROJECT_TYPE}:${PHP_VERSION}
+
+# disable opcache
+ENV PHP_OPCACHE_ENABLE=0
 
 USER root
 
