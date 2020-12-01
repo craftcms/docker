@@ -1,5 +1,5 @@
 ARG PHP_VERSION
-ARG PROJECT_TYPE=fpm
+ARG PROJECT_TYPE
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # setup general options for environment variables
