@@ -20,3 +20,5 @@ USER www-data
 
 EXPOSE ${PORT}
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
+
+# ONBUILD COPY --chown=www-data:www-data . .

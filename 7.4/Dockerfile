@@ -2,43 +2,6 @@ ARG PHP_VERSION=7.4
 ARG PROJECT_TYPE=fpm
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
-RUN set -ex && \
-    apk --no-cache add \
-        postgresql-client \
-        postgresql-dev \
-        autoconf \
-        g++ \
-        make \
-        freetype \
-        libzip-dev \
-        libpng \
-        libjpeg-turbo \
-        freetype-dev \
-        libpng-dev \
-        libjpeg-turbo-dev \
-        imagemagick \
-        imagemagick-dev \
-        imagemagick-libs && \
-    docker-php-ext-configure gd && \
-    docker-php-ext-install -j$(nproc) \
-        gd \
-        pdo \
-        pdo_mysql \
-        pdo_pgsql \
-        intl \
-        opcache \
-        zip && \
-    pecl install imagick redis && \
-    docker-php-ext-enable imagick redis && \
-    apk del --no-cache \
-        freetype-dev \
-        libpng-dev \
-        libjpeg-turbo-dev \
-        autoconf \
-        g++ \
-        make \
-        imagemagick-dev
-
 # setup general options for environment variables
 ARG PHP_MEMORY_LIMIT_ARG="256M"
 ENV PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT_ARG}
@@ -68,6 +31,45 @@ ENV PHP_OPCACHE_MEMORY_CONSUMPTION=$PHP_OPCACHE_MEMORY_CONSUMPTION_ARG
 ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
+
+RUN set -ex && \
+    apk --no-cache add \
+    postgresql-client \
+    postgresql-dev \
+    autoconf \
+    g++ \
+    make \
+    freetype \
+    libzip-dev \
+    libpng \
+    libjpeg-turbo \
+    freetype-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    libxml2-dev \
+    imagemagick \
+    imagemagick-dev \
+    imagemagick-libs && \
+    docker-php-ext-configure gd && \
+    docker-php-ext-install -j$(nproc) \
+    gd \
+    pdo \
+    pdo_mysql \
+    pdo_pgsql \
+    intl \
+    soap \
+    opcache \
+    zip && \
+    pecl install imagick redis && \
+    docker-php-ext-enable imagick redis && \
+    apk del --no-cache \
+    freetype-dev \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    autoconf \
+    g++ \
+    make \
+    imagemagick-dev
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
