@@ -1,6 +1,6 @@
 .PHONY: build
 
-build: all-php-fpm all-php-fpm-dev
+build: all-php-fpm all-php-fpm-dev all-nginx all-nginx-dev
 
 all-php-fpm:
 	docker build --build-arg PHP_VERSION=7.4 \
@@ -29,6 +29,14 @@ all-php-fpm-dev:
 all-nginx:
 	docker build --build-arg PHP_VERSION=7.4 \
 		-t craftcms/nginx:7.4 nginx
+	docker build --build-arg PHP_VERSION=7.3 \
+		-t craftcms/nginx:7.3 nginx
+	docker build --build-arg PHP_VERSION=7.2 \
+		-t craftcms/nginx:7.2 nginx
 all-nginx-dev:
 	docker build --build-arg PHP_VERSION=7.4-dev \
-		-t craftcms/nginx:7.4 nginx
+		-t craftcms/nginx:7.4-dev nginx
+	docker build --build-arg PHP_VERSION=7.3-dev \
+		-t craftcms/nginx:7.3-dev nginx
+	docker build --build-arg PHP_VERSION=7.2-dev \
+		-t craftcms/nginx:7.2-dev nginx
