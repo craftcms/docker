@@ -3,6 +3,9 @@
 build: all-php-fpm all-php-fpm-dev all-nginx all-nginx-dev
 
 all-php-fpm:
+	docker build --build-arg PHP_VERSION=8.0 \
+		--build-arg PROJECT_TYPE=fpm \
+		-t craftcms/php-fpm:8.0 8.0
 	docker build --build-arg PHP_VERSION=7.4 \
 		--build-arg PROJECT_TYPE=fpm \
 		-t craftcms/php-fpm:7.4 7.4
@@ -16,6 +19,10 @@ all-php-fpm:
 		--build-arg PROJECT_TYPE=fpm \
 		-t craftcms/php-fpm:7.1 7.1
 all-php-fpm-dev:
+	docker build -f 8.0/dev.Dockerfile \
+		--build-arg PHP_VERSION=8.0 \
+		--build-arg PROJECT_TYPE=php-fpm \
+		-t craftcms/php-fpm:8.0-dev 8.0
 	docker build -f 7.4/dev.Dockerfile \
 		--build-arg PHP_VERSION=7.4 \
 		--build-arg PROJECT_TYPE=php-fpm \
@@ -34,6 +41,8 @@ all-php-fpm-dev:
 		-t craftcms/php-fpm:7.1-dev 7.1
 
 all-nginx:
+	docker build --build-arg PHP_VERSION=8.0 \
+		-t craftcms/nginx:8.0 nginx
 	docker build --build-arg PHP_VERSION=7.4 \
 		-t craftcms/nginx:7.4 nginx
 	docker build --build-arg PHP_VERSION=7.3 \
