@@ -47,6 +47,7 @@ RUN set -ex && \
     libpng-dev \
     libjpeg-turbo-dev \
     libxml2-dev \
+    icu-dev \
     imagemagick \
     imagemagick-dev \
     imagemagick-libs && \
