@@ -1,25 +1,65 @@
 # Craft Docker Images
 
-[![craftcms/php-fpm](https://img.shields.io/docker/pulls/craftcms/php-fpm.svg)](https://hub.docker.com/r/craftcms/php-fpm)
-[![craftcms/cli](https://img.shields.io/docker/pulls/craftcms/cli.svg)](https://hub.docker.com/r/craftcms/cli)
-[![craftcms/nginx](https://img.shields.io/docker/pulls/craftcms/nginx.svg)](https://hub.docker.com/r/craftcms/nginx)
-
 These images are provided as a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and preconfigured to meet Craft’s requirements in production and development environments.
 
 ## Images
 
+There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:7.4`).
+
+Each image and PHP version also provides a `-dev` variant which has xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:7.4-dev`). Images that do not include `-dev` are considered production.
+
+> Note: you are not required to use `-dev` images for local development, they are provided with xdebug to make debugging easier.
+
+### php-fpm
+
+[![craftcms/php-fpm](https://img.shields.io/docker/pulls/craftcms/php-fpm.svg)](https://hub.docker.com/r/craftcms/php-fpm)
+
+The `php-fpm` image is provided as the base image (which is also used for the `nginx` image) and requires you "bring your own server".
+
+| Image                      | Use | Environment   |
+|----------------------------|-----|---------------|
+| `craftcms/php-fpm:7.4`     | web | `production`  |
+| `craftcms/php-fpm:7.4-dev` | web | `development` |
+| `craftcms/php-fpm:7.3`     | web | `production`  |
+| `craftcms/php-fpm:7.3-dev` | web | `development` |
+| `craftcms/php-fpm:7.2`     | web | `production`  |
+| `craftcms/php-fpm:7.2-dev` | web | `development` |
+| `craftcms/php-fpm:7.1`     | web | `production`  |
+| `craftcms/php-fpm:7.1-dev` | web | `development` |
+
+### Nginx
+
+[![craftcms/nginx](https://img.shields.io/docker/pulls/craftcms/nginx.svg)](https://hub.docker.com/r/craftcms/nginx)
+
+The `nginx` image is used for a typical installation and includes an Nginx server configured for Craft CMS and php-fpm.
+
+| Image                    | Use | Environment   |
+|--------------------------|-----|---------------|
+| `craftcms/nginx:7.4`     | web | `production`  |
+| `craftcms/nginx:7.4-dev` | web | `development` |
+| `craftcms/nginx:7.3`     | web | `production`  |
+| `craftcms/nginx:7.3-dev` | web | `development` |
+| `craftcms/nginx:7.2`     | web | `production`  |
+| `craftcms/nginx:7.2-dev` | web | `development` |
+| `craftcms/nginx:7.1`     | web | `production`  |
+| `craftcms/nginx:7.1-dev` | web | `development` |
+
+### cli
+
+[![craftcms/cli](https://img.shields.io/docker/pulls/craftcms/cli.svg)](https://hub.docker.com/r/craftcms/cli)
+
+The image type `cli` which is used to run queues, migrations, etc. and the image does not expose ports for HTTP/S or PHP-FPM.
+
 | Image                      | Use   | Environment   |
 |----------------------------|-------|---------------|
-| `craftcms/nginx:7.4`       | web   | `production`  |
-| `craftcms/nginx:7.3`       | web   | `production`  |
-| `craftcms/php-fpm:7.4`     | web   | `production`  |
-| `craftcms/php-fpm:7.4-dev` | web   | `development` |
-| `craftcms/php-fpm:7.3`     | web   | `production`  |
-| `craftcms/php-fpm:7.3-dev` | web   | `development` |
 | `craftcms/cli:7.4`         | queue | `production`  |
 | `craftcms/cli:7.4-dev`     | queue | `development` |
 | `craftcms/cli:7.3`         | queue | `production`  |
 | `craftcms/cli:7.3-dev`     | queue | `development` |
+| `craftcms/cli:7.2`         | queue | `production`  |
+| `craftcms/cli:7.2-dev`     | queue | `development` |
+| `craftcms/cli:7.1`         | queue | `production`  |
+| `craftcms/cli:7.1-dev`     | queue | `development` |
 
 ## Usage
 
