@@ -229,6 +229,7 @@ This image is based off the [official Docker PHP FPM image](https://hub.docker.c
 ```dockerfile
 FROM craftcms/php-fpm:7.4
 
+# switch to the root user
 USER root
 RUN docker-php-ext-install sockets
 USER www-data
