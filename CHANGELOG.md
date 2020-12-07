@@ -1,6 +1,6 @@
 # Release Notes for Craft CMS Docker Images
 
-## Unreleased
+## 2020-12-07
 
 ### Added
 
