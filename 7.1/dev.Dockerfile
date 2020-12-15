@@ -22,4 +22,7 @@ RUN set -ex && \
     g++ \
     make
 
+# expose the xdebug port
+EXPOSE 9003
+
 USER www-data
