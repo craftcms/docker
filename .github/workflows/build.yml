@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [7.0, 7.1, 7.2, 7.3, 7.4, 8.0]
+        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
     name: build - ${{ matrix.php }}
     steps:
       - name: Set up QEMU
@@ -24,7 +24,7 @@ jobs:
       - name: Build and push php-fpm:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.php }}
+          context: ./${{ matrix.php }}
           push: true
           tags: craftcms/php-fpm:${{ matrix.php }}
           build-args: |
@@ -33,7 +33,7 @@ jobs:
       - name: Build and push php-fpm:${{ matrix.php }}-dev
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.php }}
+          context: ./${{ matrix.php }}
           push: true
           tags: craftcms/php-fpm:${{ matrix.php }}-dev
           build-args: |
