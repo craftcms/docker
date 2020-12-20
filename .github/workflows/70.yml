@@ -1,4 +1,4 @@
-name: Docker Build
+name: Docker Build 7.0s
 on:
   push:
     branches:
@@ -6,14 +6,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: true
-      matrix:
-        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
-    name: build - ${{ matrix.php }}
+    name: build 7.0
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          path: "7.0"
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -23,23 +21,23 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push php-fpm:${{ matrix.php }}
+      - name: Build and push php-fpm7.0
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.php }}
-          file: ./${{ matrix.php }}/Dockerfile
+          context: "7.0"
+          file: ./7.0/Dockerfile
           push: true
-          tags: craftcms/php-fpm:${{ matrix.php }}
+          tags: craftcms/php-fpm7.0
           build-args: |
             PROJECT_TYPE=fpm
-            PHP_VERSION=${{ matrix.php }}
-      - name: Build and push php-fpm:${{ matrix.php }}-dev
+            PHP_VERSION=7.0
+      - name: Build and push php-fpm:7.0-dev
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.php }}
-          file: ./${{ matrix.php }}/dev.Dockerfile
+          context: "7.0"
+          file: ./7.0/dev.Dockerfile
           push: true
-          tags: craftcms/php-fpm:${{ matrix.php }}-dev
+          tags: craftcms/php-fpm:7.0-dev
           build-args: |
             PROJECT_TYPE=php-fpm
-            PHP_VERSION=${{ matrix.php }}
+            PHP_VERSION=7.0
