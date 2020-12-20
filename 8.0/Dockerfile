@@ -47,9 +47,10 @@ RUN set -ex && \
     libpng-dev \
     libjpeg-turbo-dev \
     libxml2-dev \
-    imagemagick \
-    imagemagick-dev \
-    imagemagick-libs && \
+    # imagemagick \
+    # imagemagick-dev \
+    # imagemagick-libs
+    && \
     docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
     gd \
@@ -60,8 +61,8 @@ RUN set -ex && \
     soap \
     opcache \
     zip && \
-    pecl install imagick redis && \
-    docker-php-ext-enable imagick redis && \
+    pecl install redis && \
+    docker-php-ext-enable redis && \
     apk del --no-cache \
     freetype-dev \
     libpng-dev \

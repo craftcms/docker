@@ -1,5 +1,9 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2020-12-20
+
+- Add PHP 8.0 images without imagick until [this upstream issue](https://github.com/Imagick/imagick/issues/358) is resolved.
+
 ## 2020-12-07
 
 ### Added
