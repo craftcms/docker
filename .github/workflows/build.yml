@@ -22,7 +22,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push php-fpm:${{ matrix.php }}
-        id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
@@ -32,7 +31,6 @@ jobs:
             PROJECT_TYPE=fpm
             PHP_VERSION=${{ matrix.php }}
       - name: Build and push php-fpm:${{ matrix.php }}-dev
-        id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
