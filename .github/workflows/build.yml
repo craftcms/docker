@@ -12,6 +12,8 @@ jobs:
         php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
     name: build - ${{ matrix.php }}
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
