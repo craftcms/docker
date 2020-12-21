@@ -1,5 +1,4 @@
 ARG PHP_VERSION
-ARG PORT=8080
 FROM craftcms/php-fpm:${PHP_VERSION}
 
 # install supervisor and nginx
@@ -18,7 +17,7 @@ RUN chown www-data /run/supervisord.pid
 RUN chown -R www-data:www-data /var/lib/nginx/logs/
 USER www-data
 
-EXPOSE ${PORT}
+EXPOSE 8080
 ENTRYPOINT ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
 
 # ONBUILD COPY --chown=www-data:www-data . .
