@@ -22,6 +22,9 @@ RUN set -ex && \
     g++ \
     make
 
+# install composer
+RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
 # expose the xdebug port
 EXPOSE 9003
 
