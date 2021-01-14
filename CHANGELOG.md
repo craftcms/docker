@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2021-01-14
+
+### Changed
+
+- `craftcms/php-fpm:<ver>-dev` and `craftcms/nginx:<ver>-dev` images now include backup tools for mysql and postgres databases.
+
 ## 2021-01-04
 
 - All `-dev*` images now ship with composer installed by default.

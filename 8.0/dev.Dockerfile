@@ -13,7 +13,10 @@ RUN set -ex && \
     apk --no-cache add \
     autoconf \
     g++ \
-    make && \
+    make \
+    mysql-client \
+    postgresql-client \
+    && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug && \
     apk del --no-cache \
@@ -22,6 +25,6 @@ RUN set -ex && \
     make
 
 # install composer
-RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer    
+RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
 USER www-data
