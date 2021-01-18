@@ -16,6 +16,7 @@ RUN set -ex && \
     make \
     mysql-client \
     postgresql-client \
+    git \
     && \
     pecl install xdebug && \
     docker-php-ext-enable xdebug && \

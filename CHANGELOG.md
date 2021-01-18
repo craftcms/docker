@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2021-01-18
+
+### Changed
+
+- `craftcms/php-fpm:<ver>-dev` and `craftcms/nginx:<ver>-dev` images now include `git`.
+
 ## 2021-01-14
 
 ### Changed
