@@ -31,7 +31,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
-          file: Dockerfile
+          file: ${{ matrix.php }}/Dockerfile
           push: true
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           tags: craftcms/php-fpm:${{ matrix.php }}
@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
-          file: dev.Dockerfile
+          file: ${{ matrix.php }}/dev.Dockerfile
           push: true
           platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
           tags: craftcms/php-fpm:${{ matrix.php }}-dev
