@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2021-01-26
+
+### Added
+
+- Added an option `NGINX_CONF` ARG to the `craftcms/nginx` images to allow overriding the nginx configuration file to COPY to the image.
+
 ## 2021-01-18
 
 ### Changed

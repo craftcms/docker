@@ -53,12 +53,17 @@ all-nginx:
 		-t craftcms/nginx:7.1 nginx
 all-nginx-dev:
 	docker build --build-arg PHP_VERSION=8.0-dev \
+		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:8.0-dev nginx
 	docker build --build-arg PHP_VERSION=7.4-dev \
+		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.4-dev nginx
 	docker build --build-arg PHP_VERSION=7.3-dev \
+		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.3-dev nginx
 	docker build --build-arg PHP_VERSION=7.2-dev \
+		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.2-dev nginx
 	docker build --build-arg PHP_VERSION=7.1-dev \
+		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.1-dev nginx
