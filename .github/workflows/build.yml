@@ -20,6 +20,7 @@ jobs:
         run: |
           pwd
           ls -la
+          ls -la ${{ matrix.php }}
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
