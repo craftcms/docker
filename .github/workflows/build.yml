@@ -33,7 +33,7 @@ jobs:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
           push: true
-          platforms: linux/386,linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}
           build-args: |
             PROJECT_TYPE=fpm
@@ -44,7 +44,7 @@ jobs:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/dev.Dockerfile
           push: true
-          platforms: linux/386,linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}-dev
           build-args: |
             PROJECT_TYPE=php-fpm
@@ -55,7 +55,7 @@ jobs:
           context: nginx
           file: nginx/Dockerfile
           push: true
-          platforms: linux/386,linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}-dev
           build-args: |
             PHP_VERSION=${{ matrix.php }}
