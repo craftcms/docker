@@ -28,8 +28,8 @@ jobs:
       - name: Build and push php-fpm:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: Dockerfile
+          context: ${{ matrix.php }}
+          file: ${{ matrix.php }}/Dockerfile
           push: true
           tags: craftcms/php-fpm:${{ matrix.php }}
           build-args: |
