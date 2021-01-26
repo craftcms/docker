@@ -9,15 +9,11 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ["7.0"]
+        php: ["7.0", "7.1"]
     name: build ${{ matrix.php }} images
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: current directory
-        run: |
-          pwd
-          ls -la
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
