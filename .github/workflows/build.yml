@@ -11,6 +11,9 @@ jobs:
       matrix:
         php: ["7.1"]
     name: build ${{ matrix.php }} images
+    defaults:
+      run:
+         working-directory: ${{ matrix.php }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -25,7 +28,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push php-fpm:${{ matrix.php }}
         uses: docker/build-push-action@v2
-        working-directory: ${{ matrix.php }}
         with:
           context: .
           file: Dockerfile
