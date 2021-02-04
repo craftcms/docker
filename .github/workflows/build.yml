@@ -24,7 +24,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push php-fpm:${{ matrix.php }}
+      - name: Build craftcms/php-fpm:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
@@ -35,7 +35,7 @@ jobs:
           build-args: |
             PROJECT_TYPE=fpm
             PHP_VERSION=${{ matrix.php }}
-      - name: Build and push php-fpm:${{ matrix.php }}-dev
+      - name: Build craftcms/php-fpm:${{ matrix.php }}-dev
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
@@ -46,13 +46,24 @@ jobs:
           build-args: |
             PROJECT_TYPE=php-fpm
             PHP_VERSION=${{ matrix.php }}
-      - name: Build and push nginx:${{ matrix.php }}
+      - name: Build craftcms/nginx:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
           context: nginx
           file: nginx/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: craftcms/php-fpm:${{ matrix.php }}-dev
+          tags: craftcms/nginx:${{ matrix.php }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}
+      - name: Build craftcms/nginx:${{ matrix.php }}-dev
+        uses: docker/build-push-action@v2
+        with:
+          context: nginx
+          file: nginx/Dockerfile
+          push: true
+          platforms: linux/amd64,linux/arm64
+          tags: craftcms/nginx:${{ matrix.php }}-dev
+          build-args: |
+            PHP_VERSION=${{ matrix.php }}
+            NGINX_CONF=dev.default.conf
