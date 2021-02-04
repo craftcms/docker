@@ -16,11 +16,6 @@ RUN set -ex && \
     postgresql-client \
     git \
     && \
-    pecl install xdebug-2.9.8 && \
-    echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini && \
-    echo "xdebug.remote_enable=on" >> /usr/local/etc/php/conf.d/xdebug.ini && \
-    echo "xdebug.remote_autostart=off" >> /usr/local/etc/php/conf.d/xdebug.ini && \
-    docker-php-ext-enable xdebug && \
     apk del --no-cache \
     autoconf \
     g++ \
@@ -28,6 +23,9 @@ RUN set -ex && \
 
 # install composer
 RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
+
+# downgrade composer to version 1
+RUN set -ex composer self-update --1
 
 # expose the xdebug port
 EXPOSE 9003
