@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ["7.1", "7.2", "7.3", "7.4", "8.0"]
+        php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
     name: build ${{ matrix.php }} images
     steps:
       - name: Check it out
@@ -30,7 +30,7 @@ jobs:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}
           build-args: |
             PROJECT_TYPE=fpm
@@ -41,7 +41,7 @@ jobs:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/dev.Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}-dev
           build-args: |
             PROJECT_TYPE=php-fpm
@@ -52,7 +52,7 @@ jobs:
           context: nginx
           file: nginx/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           tags: craftcms/nginx:${{ matrix.php }}
           build-args: |
             PHP_VERSION=${{ matrix.php }}
@@ -62,7 +62,7 @@ jobs:
           context: nginx
           file: nginx/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           tags: craftcms/nginx:${{ matrix.php }}-dev
           build-args: |
             PHP_VERSION=${{ matrix.php }}
