@@ -87,5 +87,5 @@ jobs:
           platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
           tags: craftcms/nginx:${{ matrix.php }}-dev
           build-args: |
-            PHP_VERSION=${{ matrix.php }}
+            PHP_VERSION=${{ matrix.php }}-dev
             NGINX_CONF=dev.default.conf
