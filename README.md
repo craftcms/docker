@@ -1,23 +1,25 @@
 # Craft Docker Images
 
-These images are provided as a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and preconfigured to meet Craft’s requirements in production and development environments.
+These images are provided as a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and pre-configured to meet Craft’s requirements in production and development environments.
 
 ## Images
 
 There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:7.4`).
 
-Each image and PHP version also provides a `-dev` variant which has xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:7.4-dev`). Images that do not include `-dev` are considered production.
+Each image and PHP version also provides a `-dev` variant which has Xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:7.4-dev`). Images that do not include `-dev` are considered production.
 
-> Note: you are not required to use `-dev` images for local development, they are provided with xdebug to make debugging easier.
+> Note: you are not required to use `-dev` images for local development, they are provided with Xdebug to make debugging easier.
 
 ### php-fpm
 
 [![craftcms/php-fpm](https://img.shields.io/docker/pulls/craftcms/php-fpm.svg)](https://hub.docker.com/r/craftcms/php-fpm)
 
-The `php-fpm` image is provided as the base image (which is also used for the `nginx` image) and requires you "bring your own server".
+The `php-fpm` image is provided as the base image (and is also used for the `nginx` image) and requires you "bring your own server".
 
 | Image                      | Use | Environment   |
 |----------------------------|-----|---------------|
+| `craftcms/php-fpm:8.0`     | web | `production`  |
+| `craftcms/php-fpm:8.0-dev` | web | `development` |
 | `craftcms/php-fpm:7.4`     | web | `production`  |
 | `craftcms/php-fpm:7.4-dev` | web | `development` |
 | `craftcms/php-fpm:7.3`     | web | `production`  |
@@ -26,6 +28,8 @@ The `php-fpm` image is provided as the base image (which is also used for the `n
 | `craftcms/php-fpm:7.2-dev` | web | `development` |
 | `craftcms/php-fpm:7.1`     | web | `production`  |
 | `craftcms/php-fpm:7.1-dev` | web | `development` |
+| `craftcms/php-fpm:7.0`     | web | `production`  |
+| `craftcms/php-fpm:7.0-dev` | web | `development` |
 
 ### Nginx
 
@@ -35,6 +39,8 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 
 | Image                    | Use | Environment   |
 |--------------------------|-----|---------------|
+| `craftcms/nginx:8.0`     | web | `production`  |
+| `craftcms/nginx:8.0-dev` | web | `development` |
 | `craftcms/nginx:7.4`     | web | `production`  |
 | `craftcms/nginx:7.4-dev` | web | `development` |
 | `craftcms/nginx:7.3`     | web | `production`  |
@@ -43,6 +49,8 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 | `craftcms/nginx:7.2-dev` | web | `development` |
 | `craftcms/nginx:7.1`     | web | `production`  |
 | `craftcms/nginx:7.1-dev` | web | `development` |
+| `craftcms/nginx:7.0`     | web | `production`  |
+| `craftcms/nginx:7.0-dev` | web | `development` |
 
 ### cli
 
@@ -52,6 +60,8 @@ The image type `cli` which is used to run queues, migrations, etc. and the image
 
 | Image                      | Use   | Environment   |
 |----------------------------|-------|---------------|
+| `craftcms/cli:8.0`         | queue | `production`  |
+| `craftcms/cli:8.0-dev`     | queue | `development` |
 | `craftcms/cli:7.4`         | queue | `production`  |
 | `craftcms/cli:7.4-dev`     | queue | `development` |
 | `craftcms/cli:7.3`         | queue | `production`  |
@@ -60,6 +70,8 @@ The image type `cli` which is used to run queues, migrations, etc. and the image
 | `craftcms/cli:7.2-dev`     | queue | `development` |
 | `craftcms/cli:7.1`         | queue | `production`  |
 | `craftcms/cli:7.1-dev`     | queue | `development` |
+| `craftcms/cli:7.0`         | queue | `production`  |
+| `craftcms/cli:7.0-dev`     | queue | `development` |
 
 ## Usage
 
@@ -67,7 +79,7 @@ There are two main types of images: `php-fpm` for handling the web application, 
 
 > Note: We purposely do not provide a web server image because that choice depends on your project needs. We do, however, provide examples illustrating how to use Nginx or Caddy with the `php-fpm` images.
 
-This example uses a Docker [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) to install composer dependencies inside a seperate layer before copying them into the final image.
+This example uses a Docker [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) to install composer dependencies inside a separate layer before copying them into the final image.
 
 ```dockerfile
 # use a multi-stage build for dependencies
@@ -114,27 +126,19 @@ The image is designed to be run by a `www-data` user that owns of the image’s 
 
 We recommend running Docker locally if you’re shipping your project to a Docker-based envrionment such as Amazon Web Services Elastic Container Services (ECS). The following Docker Compose file will setup your local environment with the following:
 
-1. `nginx` service that will accept HTTP requests on port 8000
-2. `php-fpm` service that will handle running PHP
-3. `mysql` service that will store your content
-4. `console` service that will run the queue locally
-5. `redis` service that will handle queue and caching
+1. `web` service that will handle running PHP and Nginx
+2. `mysql` service that will store your content
+3. `console` service that will run the queue locally
+4. `redis` service that will handle queue and caching
 
 ```yaml
 version: "3.6"
 services:
-  php-fpm:
-    image: craftcms/php-fpm:7.4-dev
+  web:
+    image: craftcms/nginx:7.4-dev
     volumes:
       - .:/app
     env_file: .env
-  nginx:
-    image: nginx:stable-alpine
-    ports:
-      - 8000:80
-    volumes:
-      - ./path/to/nginx.conf:/etc/nginx/conf.d/default.conf
-      - .:/app
   console:
     image: craftcms/cli:7.4-dev
     volumes:
@@ -158,68 +162,6 @@ services:
       - 6379:6379
 volumes:
   db_data:
-```
-
-You will need to provide an `nginx.conf` file that points the `php-fpm` service, not `localhost` or `127.0.0.1`. We can borrow the following example from [nystudio107/nginx-craft](https://github.com/nystudio107/nginx-craft)’s `sites-available/basic_localdev.com.conf` with a few adjustments:
-
-- remove comments for readibility
-- use a catch-all `server_name` of `_`
-- set `/app/web` as the web root
-- log to stdout
-- direct PHP to our named `php-fpm` service instead of localhost (on its default port `9000`)
-- unset the `HTTP_HOST` header
-- remove Dotenvy, `.htaccess` file skipping, and `sendfile off` that aren’t needed
-
-```nginx
-server {
-    listen 80;
-    listen [::]:80;
-
-    server_name _;
-    root /app/web;
-    index index.html index.htm index.php;
-    charset utf-8;
-
-    gzip_static  on;
-
-    ssi on;
-
-    client_max_body_size 0;
-
-    error_page 404 /index.php?$query_string;
-
-    access_log off;
-    error_log /dev/stdout info;
-
-    location / {
-        try_files $uri/index.html $uri $uri/ /index.php?$query_string;
-    }
-
-    location ~ [^/]\.php(/|$) {
-        try_files $uri $uri/ /index.php?$query_string;
-        fastcgi_split_path_info ^(.+\.php)(/.+)$;
-        fastcgi_pass php-fpm:9000;
-        fastcgi_index index.php;
-        include fastcgi_params;
-        fastcgi_param PATH_INFO $fastcgi_path_info;
-        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
-        fastcgi_param DOCUMENT_ROOT $realpath_root;
-        fastcgi_param HTTP_PROXY "";
-
-        add_header Last-Modified $date_gmt;
-        add_header Cache-Control "no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0";
-        if_modified_since off;
-        expires off;
-        etag off;
-
-        fastcgi_intercept_errors off;
-        fastcgi_buffer_size 16k;
-        fastcgi_buffers 4 16k;
-        fastcgi_connect_timeout 300;
-        fastcgi_send_timeout 300;
-        fastcgi_read_timeout 300;
-    }
-}
 ```
 
 ## Installing Extensions
