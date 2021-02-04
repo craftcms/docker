@@ -1,5 +1,14 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2021-02-03
+
+### Added
+- Added php `7.0` images for `craftcms/cli`, `craftcms/php-fpm`, and `craftcms/nginx`.
+- Added multi-architecture images for arm64, arm/v6, arm/v7, and amd64 to support ARM based development environments like Apple Silicon.
+
+### Changed
+- PHP `7.0` no longer ship with xdebug as `pecl` no longer supports 7.0 (e.g. `pecl/xdebug requires PHP (version >= 7.2.0, version <= 8.0.99), installed version is 7.0.33`).
+
 ## 2021-01-26
 
 ### Added
