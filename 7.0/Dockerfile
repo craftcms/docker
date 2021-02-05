@@ -53,6 +53,7 @@ RUN set -ex && \
     imagemagick-libs && \
     docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
+    bcmath \
     gd \
     pdo \
     pdo_mysql \

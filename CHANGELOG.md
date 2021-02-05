@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2021-02-05
+
+### Added
+- Added the `bcmath` extension to all images.
+
 ## 2021-02-03
 
 ### Added
