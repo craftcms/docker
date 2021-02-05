@@ -9,7 +9,7 @@ jobs:
     strategy:
       matrix:
         php: ["7.0", "7.1", "7.2", "7.3", "7.4", "8.0"]
-    name: build ${{ matrix.php }} images
+    name: build php-fpm and nginx ${{ matrix.php }} images
     steps:
       - name: Check it out
         uses: actions/checkout@v2
