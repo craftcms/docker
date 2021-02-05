@@ -1,8 +1,8 @@
 name: Build php-fpm and nginx images
 on:
   push:
-    branches:
-      - stable
+    tags:
+      - '*.*.*'
 jobs:
   build:
     runs-on: ubuntu-latest
