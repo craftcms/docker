@@ -32,6 +32,10 @@ ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
+# copy the blackfire script
+COPY blackfire.sh /tmp/blackfire.sh
+
+# setup the php install
 RUN set -ex && \
     apk --no-cache add \
     postgresql-client \
@@ -70,7 +74,9 @@ RUN set -ex && \
     autoconf \
     g++ \
     make \
-    imagemagick-dev
+    imagemagick-dev && \
+    sh /tmp/blackfire.sh \
+    rm /tmp/blackfire.sh
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
