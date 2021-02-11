@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.1.1 - 2021-02-11
+
+### Changed
+- Removed Arm v6 and v7 builds to support the Blackfire extension.
+
 ## 1.1.0 - 2021-02-11
 
 ### Added
