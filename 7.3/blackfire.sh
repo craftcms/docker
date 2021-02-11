@@ -32,6 +32,3 @@ mv /tmp/blackfire/*.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/b
 
 # load the extension in the ini file
 echo 'extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/blackfire.so' > /usr/local/etc/php/conf.d/ext-blackfire.ini
-
-# clean up
-rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz

@@ -74,7 +74,9 @@ RUN set -ex && \
     autoconf \
     g++ \
     make \
-    imagemagick-dev
+    imagemagick-dev && \
+    sh /tmp/blackfire.sh && \
+    rm /tmp/blackfire*
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
