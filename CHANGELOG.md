@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.1.0 - 2021-02-11
+
+### Added
+- Added the `blackfire` extension for all images. [#18](https://github.com/craftcms/docker/issues/18)
+
 ## 1.0.0 - 2021-02-05
 
 ### Added
