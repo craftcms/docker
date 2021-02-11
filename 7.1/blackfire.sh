@@ -28,7 +28,7 @@ mkdir -p /tmp/blackfire
 tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire
 
 # move the .so file into the
-mv "/tmp/blackfire/*.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/blackfire.so
+mv /tmp/blackfire/*.so /usr/local/lib/php/extensions/no-debug-non-zts-20190902/blackfire.so
 
 # load the extension in the ini file
 echo 'extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/blackfire.so' > /usr/local/etc/php/conf.d/ext-blackfire.ini
