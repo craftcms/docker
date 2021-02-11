@@ -5,6 +5,9 @@
 ### Added
 - Added the `blackfire` extension for all images. [#18](https://github.com/craftcms/docker/issues/18)
 
+### Changed
+- Removed Arm v6 and v7 builds to support the Blackfire extension.
+
 ## 1.0.0 - 2021-02-05
 
 ### Added

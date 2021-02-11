@@ -30,7 +30,7 @@ jobs:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: craftcms/cli:${{ matrix.php }}
           build-args: |
             PROJECT_TYPE=cli
@@ -41,7 +41,7 @@ jobs:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/dev.Dockerfile
           push: true
-          platforms: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+          platforms: linux/amd64,linux/arm64
           tags: craftcms/cli:${{ matrix.php }}-dev
           build-args: |
             PROJECT_TYPE=cli
