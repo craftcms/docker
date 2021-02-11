@@ -29,6 +29,9 @@ RUN set -ex && \
 # install composer
 RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
+# downgrade composer to version 1
+RUN set -ex && composer self-update --1
+
 # expose the xdebug port
 EXPOSE 9003
 
