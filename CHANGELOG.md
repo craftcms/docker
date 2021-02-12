@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.1.1 - 2021-02-12
+
+### Fixed
+- Fixed an issue with the Blackfire installation script for `php-fpm` and `nginx`.
+
 ## 1.1.1 - 2021-02-11
 
 ### Changed
