@@ -1,5 +1,22 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
+
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine as builder
+
+# copy the blackfire script
+COPY blackfire-install.sh /tmp/blackfire-install.sh
+
+RUN set -ex && \
+    sh /tmp/blackfire-install.sh && \
+    source /etc/profile && \
+    curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s $BLACKFIRE_URL && \
+    mkdir -p /tmp/blackfire && \
+    tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
+    cp /tmp/blackfire/blackfire-*.so /tmp/blackfire.so && \
+    rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
+
+RUN echo 'extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/blackfire.so' > /tmp/blackfire.ini
+
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # setup general options for environment variables
@@ -32,9 +49,6 @@ ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
-# copy the blackfire script
-COPY blackfire.sh /tmp/blackfire.sh
-
 RUN set -ex && \
     apk --no-cache add \
     postgresql-client \
@@ -50,10 +64,10 @@ RUN set -ex && \
     libpng-dev \
     libjpeg-turbo-dev \
     libxml2-dev \
+    icu-dev && \
     # imagemagick \
     # imagemagick-dev \
-    # imagemagick-libs
-    && \
+    # imagemagick-libs && \
     docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
     bcmath \
@@ -65,8 +79,8 @@ RUN set -ex && \
     soap \
     opcache \
     zip && \
-    pecl install redis && \
-    docker-php-ext-enable redis && \
+    pecl install imagick redis && \
+    docker-php-ext-enable imagick redis && \
     apk del --no-cache \
     freetype-dev \
     libpng-dev \
@@ -74,12 +88,19 @@ RUN set -ex && \
     autoconf \
     g++ \
     make \
-    imagemagick-dev && \
-    sh /tmp/blackfire.sh && \
-    rm /tmp/blackfire*
+    imagemagick-dev
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
+
+# copy the blackfire extension
+COPY --from=builder /tmp/blackfire.so /tmp/blackfire.so
+COPY --from=builder /tmp/blackfire.ini /tmp/ext-blackfire.ini
+
+# move the extension and ini files
+RUN ext_dir=$(find /usr/local/lib/php/extensions/ -name "no-debug-non-zts-*") && \
+    mv /tmp/blackfire.so $ext_dir/blackfire.so && \
+    mv /tmp/ext-blackfire.ini /usr/local/etc/php/conf.d/
 
 # make the directories and set permissions
 RUN mkdir -p /app
