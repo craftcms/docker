@@ -65,9 +65,6 @@ RUN set -ex && \
     libjpeg-turbo-dev \
     libxml2-dev \
     icu-dev && \
-    # imagemagick \
-    # imagemagick-dev \
-    # imagemagick-libs && \
     docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
     bcmath \
@@ -79,16 +76,15 @@ RUN set -ex && \
     soap \
     opcache \
     zip && \
-    pecl install imagick redis && \
-    docker-php-ext-enable imagick redis && \
+    pecl install redis && \
+    docker-php-ext-enable redis && \
     apk del --no-cache \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
     autoconf \
     g++ \
-    make \
-    imagemagick-dev
+    make
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
