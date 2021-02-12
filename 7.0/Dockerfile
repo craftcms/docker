@@ -100,7 +100,7 @@ COPY --from=builder /tmp/blackfire.ini /tmp/ext-blackfire.ini
 # move the extension and ini files
 RUN ext_dir=$(find /usr/local/lib/php/extensions/ -name "no-debug-non-zts-*") && \
     mv /tmp/blackfire.so $ext_dir/blackfire.so && \
-    mv /tmp/ext-blackfire.ini /usr/local/etc/php/conf.d
+    mv /tmp/ext-blackfire.ini /usr/local/etc/php/conf.d/
 
 # make the directories and set permissions
 RUN mkdir -p /app
