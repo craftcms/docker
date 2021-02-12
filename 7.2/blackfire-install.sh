@@ -25,4 +25,4 @@ readonly local ext_string="extension=${so_path}"
 mv /tmp/blackfire/*.so $so_path
 
 # load the extension in the ini file
-echo $ext_string > /usr/local/etc/php/conf.d/ext-blackfire.ini
+echo $ext_string > /tmp/ext-blackfire.ini

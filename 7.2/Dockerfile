@@ -12,10 +12,7 @@ RUN set -ex && \
     curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s $BLACKFIRE_URL && \
     mkdir -p /tmp/blackfire && \
     tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
-    cp /tmp/blackfire/blackfire-*.so /tmp/blackfire.so && \
-    rm -rf /tmp/blackfire /tmp/blackfire-probe.tar.gz
-
-RUN echo 'extension=/usr/local/lib/php/extensions/no-debug-non-zts-20190902/blackfire.so' > /tmp/blackfire.ini
+    cp /tmp/blackfire/blackfire-*.so /tmp/blackfire.so 
 
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
@@ -95,7 +92,7 @@ COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
 # copy the blackfire extension
 COPY --from=builder /tmp/blackfire.so /tmp/blackfire.so
-COPY --from=builder /tmp/blackfire.ini /tmp/ext-blackfire.ini
+COPY --from=builder /tmp/ext-blackfire.ini /tmp/ext-blackfire.ini
 
 # move the extension and ini files
 RUN ext_dir=$(find /usr/local/lib/php/extensions/ -name "no-debug-non-zts-*") && \
