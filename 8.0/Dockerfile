@@ -1,15 +1,7 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine as builder
-
-# copy the blackfire script
-COPY blackfire-install.sh /tmp/blackfire-install.sh
-
-# run the installation script
-RUN set -ex && sh /tmp/blackfire-install.sh
-
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.13
 
 # setup general options for environment variables
 ARG PHP_MEMORY_LIMIT_ARG="256M"
@@ -81,14 +73,11 @@ RUN set -ex && \
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
-# copy the blackfire extension
-COPY --from=builder /tmp/blackfire.so /tmp/blackfire.so
-COPY --from=builder /tmp/ext-blackfire.ini /tmp/ext-blackfire.ini
+# copy the blackfire script
+COPY blackfire-install.sh /tmp/blackfire-install.sh
 
-# move the extension and ini files
-RUN ext_dir=$(find /usr/local/lib/php/extensions/ -name "no-debug-non-zts-*") && \
-    mv /tmp/blackfire.so $ext_dir/blackfire.so && \
-    mv /tmp/ext-blackfire.ini /usr/local/etc/php/conf.d/
+# run the installation script
+RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
 
 # make the directories and set permissions
 RUN mkdir -p /app

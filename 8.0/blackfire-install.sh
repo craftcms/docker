@@ -27,8 +27,8 @@ mkdir -p /tmp/blackfire
 # untar the download
 tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire
 
-# move the .so file into the
+# move the .so file into the so path
 cp /tmp/blackfire/blackfire-*.so $so_path
 
 # load the extension in the ini file
-echo $ext_ini_string > /tmp/ext-blackfire.ini
+echo "$ext_ini_string" > /usr/local/etc/php/conf.d/ext-blackfire.ini
