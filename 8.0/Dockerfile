@@ -6,13 +6,8 @@ FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine as builder
 # copy the blackfire script
 COPY blackfire-install.sh /tmp/blackfire-install.sh
 
-RUN set -ex && \
-    sh /tmp/blackfire-install.sh && \
-    source /etc/profile && \
-    curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s $BLACKFIRE_URL && \
-    mkdir -p /tmp/blackfire && \
-    tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
-    cp /tmp/blackfire/blackfire-*.so /tmp/blackfire.so 
+# run the installation script
+RUN set -ex && sh /tmp/blackfire-install.sh
 
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
