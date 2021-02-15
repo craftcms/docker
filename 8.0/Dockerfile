@@ -1,19 +1,6 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine as builder
-
-# copy the blackfire script
-COPY blackfire-install.sh /tmp/blackfire-install.sh
-
-RUN set -ex && \
-    sh /tmp/blackfire-install.sh && \
-    source /etc/profile && \
-    curl -A "Docker" -o /tmp/blackfire-probe.tar.gz -D - -L -s $BLACKFIRE_URL && \
-    mkdir -p /tmp/blackfire && \
-    tar zxpf /tmp/blackfire-probe.tar.gz -C /tmp/blackfire && \
-    cp /tmp/blackfire/blackfire-*.so /tmp/blackfire.so 
-
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # setup general options for environment variables
@@ -86,14 +73,11 @@ RUN set -ex && \
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
-# copy the blackfire extension
-COPY --from=builder /tmp/blackfire.so /tmp/blackfire.so
-COPY --from=builder /tmp/ext-blackfire.ini /tmp/ext-blackfire.ini
+# copy the blackfire script
+COPY blackfire-install.sh /tmp/blackfire-install.sh
 
-# move the extension and ini files
-RUN ext_dir=$(find /usr/local/lib/php/extensions/ -name "no-debug-non-zts-*") && \
-    mv /tmp/blackfire.so $ext_dir/blackfire.so && \
-    mv /tmp/ext-blackfire.ini /usr/local/etc/php/conf.d/
+# run the installation script
+RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
 
 # make the directories and set permissions
 RUN mkdir -p /app

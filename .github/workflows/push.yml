@@ -1,13 +1,12 @@
-name: Build Docker Images
+name: Build and Push Docker Images
 on:
   push:
-    branches:
-      - develop
+    tags:
+      - '*.*.*'
 jobs:
   build-php-fpm:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
       matrix:
         php: ["8.0", "7.4", "7.3", "7.2", "7.1", "7.0"]
     name: php-fpm and nginx ${{ matrix.php }} images
@@ -30,7 +29,7 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}
           build-args: |
@@ -41,7 +40,7 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/dev.Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: craftcms/php-fpm:${{ matrix.php }}-dev
           build-args: |
@@ -52,7 +51,7 @@ jobs:
         with:
           context: nginx
           file: nginx/Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: craftcms/nginx:${{ matrix.php }}
           build-args: |
@@ -62,7 +61,7 @@ jobs:
         with:
           context: nginx
           file: nginx/Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: craftcms/nginx:${{ matrix.php }}-dev
           build-args: |
@@ -93,7 +92,7 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: craftcms/cli:${{ matrix.php }}
           build-args: |
@@ -104,7 +103,7 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/dev.Dockerfile
-          push: false
+          push: true
           platforms: linux/amd64,linux/arm64
           tags: craftcms/cli:${{ matrix.php }}-dev
           build-args: |
