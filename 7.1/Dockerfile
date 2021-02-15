@@ -1,7 +1,7 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.13
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # setup general options for environment variables
 ARG PHP_MEMORY_LIMIT_ARG="256M"
