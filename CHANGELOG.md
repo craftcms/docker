@@ -1,6 +1,9 @@
 # Release Notes for Craft CMS Docker Images
 
-## 1.1.1 - 2021-02-12
+## 1.1.2 - 2021-02-15
+
+### Changed
+- Changed the CORS header for `craftcms/nginx:<ver>-dev` images to allow `*`.
 
 ### Fixed
 - Fixed an issue with the Blackfire installation script for `php-fpm` and `nginx`.
