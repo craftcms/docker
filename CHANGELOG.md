@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.1.3 - 2021-02-15
+
+### Changed
+- Removed the blackfire extension.
+
 ## 1.1.2 - 2021-02-15
 
 ### Changed
