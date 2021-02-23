@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## Unreleased
+
+### Fixed
+- Fixed a bug where requests for CSS, JS, font files, etc. were not being passed onto index.php when they 404.
+
 ## 1.1.3 - 2021-02-15
 
 ### Changed
