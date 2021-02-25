@@ -41,6 +41,7 @@ RUN set -ex && \
     g++ \
     make \
     freetype \
+    gnu-libiconv=1.15-r3 \
     libzip-dev \
     libpng \
     libjpeg-turbo \
