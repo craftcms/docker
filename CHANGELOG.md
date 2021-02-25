@@ -1,6 +1,6 @@
 # Release Notes for Craft CMS Docker Images
 
-## Unreleased
+## 1.2.0 - 2021-02-25
 
 ### Fixed
 - Fixed an issue with the iconv library [#16](https://github.com/craftcms/docker/issues/16).
