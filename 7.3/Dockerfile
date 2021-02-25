@@ -75,6 +75,9 @@ RUN set -ex && \
     make \
     imagemagick-dev
 
+# https://github.com/docker-library/php/issues/1121
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
