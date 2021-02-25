@@ -41,7 +41,6 @@ RUN set -ex && \
     g++ \
     make \
     freetype \
-    gnu-libiconv=1.15-r3 \
     libzip-dev \
     libpng \
     libjpeg-turbo \
@@ -76,7 +75,7 @@ RUN set -ex && \
     imagemagick-dev
 
 # https://github.com/docker-library/php/issues/1121
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so    
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
