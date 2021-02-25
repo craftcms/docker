@@ -45,6 +45,7 @@ RUN set -ex && \
     libpng \
     libjpeg-turbo \
     freetype-dev \
+    gnu-libiconv=1.15-r3 \
     libpng-dev \
     libjpeg-turbo-dev \
     libxml2-dev \
