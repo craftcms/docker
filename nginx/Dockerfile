@@ -10,7 +10,6 @@ COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY craftcms/general.conf /etc/nginx/craftcms/
 COPY craftcms/php_fastcgi.conf /etc/nginx/craftcms/
-COPY craftcms/php_fastcgi_dev.conf /etc/nginx/craftcms/
 COPY craftcms/security.conf /etc/nginx/craftcms/
 COPY ${NGINX_CONF} /etc/nginx/conf.d/default.conf
 RUN touch /run/nginx.pid
