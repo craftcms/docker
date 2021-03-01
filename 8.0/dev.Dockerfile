@@ -15,6 +15,7 @@ RUN set -ex && \
     g++ \
     make \
     mysql-client \
+    mariadb-connector-c \
     postgresql-client \
     git \
     && \
