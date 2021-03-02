@@ -81,10 +81,10 @@ ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
 # copy the blackfire script
-# COPY blackfire-install.sh /tmp/blackfire-install.sh
+COPY blackfire-install.sh /tmp/blackfire-install.sh
 
 # run the installation script
-# RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
+RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
 
 # make the directories and set permissions
 RUN mkdir -p /app
