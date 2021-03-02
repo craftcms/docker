@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.2.1 - 2021-03-02
+
+### Changed
+- Added the mariadb-connector-c package to resolve issues with mysql 8.0 for `-dev` images [#19](https://github.com/craftcms/docker/issues/19).
+- Allow `txt` files to be sent to PHP [#23](https://github.com/craftcms/docker/issues/23).
+
 ## 1.2.0 - 2021-02-25
 
 ### Fixed
