@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.2.2 - 2021-03-05
+
+### Added
+- Added the Blackfire PHP extension.
+
 ## 1.2.1 - 2021-03-02
 
 ### Changed
