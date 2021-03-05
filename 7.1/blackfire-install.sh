@@ -1,6 +1,6 @@
-readonly local version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
-readonly local system_arch=$(uname -p)
-arch_sys="amd64"
+readonly version=$(php -r "echo PHP_MAJOR_VERSION.PHP_MINOR_VERSION;")
+readonly system_arch=$(uname -m)
+
 case $system_arch in
     "aarch64")
         arch_sys="arm64"
