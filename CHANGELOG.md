@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.2.3 - 2021-03-05
+
+### Fixed
+- Fixed a warning when installing Blackfire on ARM devices.
+
 ## 1.2.2 - 2021-03-05
 
 ### Added
