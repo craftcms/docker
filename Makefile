@@ -167,14 +167,3 @@ setup:
 	docker buildx create --name all-platforms --platform linux/amd64,linux/arm64
 	docker buildx use all-platforms
 	docker buildx inspect --bootstrap
-
-dev: dev-build
-	docker run -d --hostname testing --name=testing craftcms/php-fpm:8.0-dev && \
-	docker exec -it testing sh -l && \
-	docker container rm -f testing
-dev-build:
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 8.0/dev.Dockerfile \
-		--build-arg PHP_VERSION=8.0 \
-		--build-arg PROJECT_TYPE=php-fpm \
-		-t craftcms/php-fpm:8.0-dev 8.0

@@ -11,10 +11,13 @@ RUN set -ex && \
     apk --no-cache add \
     autoconf \
     g++ \
+    git \
     make \
     mysql-client \
+    mariadb-connector-c \
+    nodejs \
+    npm \
     postgresql-client \
-    git \
     && \
     apk del --no-cache \
     autoconf \
