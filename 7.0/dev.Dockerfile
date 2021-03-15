@@ -14,9 +14,7 @@ RUN set -ex && \
     git \
     make \
     mysql-client \
-    mariadb-connector-c \
     nodejs \
-    npm \
     postgresql-client \
     && \
     apk del --no-cache \
