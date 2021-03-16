@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## Unreleased
+
+### Changed
+- Nodejs and npm are now pre-installed in `craftcms/nginx:<ver>-dev` images.
+- `craftcms/nginx:<ver>-dev` now exposes port 3000 as the "node" port.
+
 ## 1.2.3 - 2021-03-05
 
 ### Fixed
