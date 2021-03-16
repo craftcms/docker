@@ -1,6 +1,6 @@
 # Release Notes for Craft CMS Docker Images
 
-## Unreleased
+## 1.2.4 - 2021-03-16
 
 ### Changed
 - Nodejs and npm are now pre-installed in `craftcms/nginx:<ver>-dev` images.
