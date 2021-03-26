@@ -31,4 +31,7 @@ RUN set -ex && composer self-update --1
 # expose the xdebug port
 EXPOSE 9003
 
+# expose additional ports for node
+EXPOSE 3000 3001
+
 USER www-data
