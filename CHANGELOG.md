@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## Unreleased
+
+### Changed
+- Expose ports 3000 and 3001 for tools such as nodejs.
+
 ## 1.2.4 - 2021-03-16
 
 ### Changed
