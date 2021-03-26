@@ -31,7 +31,4 @@ RUN set -ex && \
 # install composer
 RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer
 
-# expose node port
-EXPOSE 3000
-
 USER www-data
