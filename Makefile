@@ -171,7 +171,7 @@ setup:
 	docker buildx inspect --bootstrap
 
 run:
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+	docker buildx build --load --platform linux/amd64 \
 		--build-arg PHP_VERSION=${PHP_TEST} \
 		--build-arg PROJECT_TYPE=fpm \
 		-t craftcms/php-fpm:${PHP_TEST} ${PHP_TEST}
