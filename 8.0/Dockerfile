@@ -50,7 +50,7 @@ RUN set -ex && \
     libjpeg-turbo-dev \
     libxml2-dev \
     icu-dev && \
-    docker-php-ext-configure gd && \
+    docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \

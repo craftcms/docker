@@ -1,5 +1,7 @@
 .PHONY: build
 
+PHP_TEST ?= 8.0
+
 build: all-cli all-cli-dev all-php-fpm all-php-fpm-dev all-nginx all-nginx-dev
 
 all-cli:
@@ -167,3 +169,10 @@ setup:
 	docker buildx create --name all-platforms --platform linux/amd64,linux/arm64
 	docker buildx use all-platforms
 	docker buildx inspect --bootstrap
+
+run:
+	docker buildx build --load --platform linux/amd64 \
+		--build-arg PHP_VERSION=${PHP_TEST} \
+		--build-arg PROJECT_TYPE=fpm \
+		-t craftcms/php-fpm:${PHP_TEST} ${PHP_TEST}
+	docker run --rm -it craftcms/php-fpm:${PHP_TEST} sh
