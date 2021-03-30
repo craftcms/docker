@@ -53,7 +53,7 @@ RUN set -ex && \
     imagemagick \
     imagemagick-dev \
     imagemagick-libs && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-configure gd && \
     docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \
