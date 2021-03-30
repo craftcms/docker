@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## Unreleased
+
+### Added
+- Added GD JPEG support to PHP images. ([#25](https://github.com/craftcms/docker/issues/25))
+
 ## 1.2.5 - 2021-03-29
 
 ### Changed
