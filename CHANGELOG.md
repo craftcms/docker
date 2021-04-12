@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## Unreleased
+
+### Added
+- Added an include to `/app/nitro.conf` to the `craftcms/nginx:<ver>-dev` images.
+
 ## 1.2.6 - 2021-03-30
 
 ### Added
