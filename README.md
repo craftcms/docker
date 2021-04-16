@@ -166,6 +166,25 @@ volumes:
   db_data:
 ```
 
+## Setup a local demo
+
+1. Create a folder for your demo (i.e. `mkdir demo; cd demo`)
+1. Save the above docker compose file to `docker-compose.yml`
+1. Download the latest `tar.gz` package from craftcms.com and extract.
+1. Edit `.env` file, update:
+
+    ```
+    DB_SERVER=mysql
+    DB_DATABASE=dev_craftcms
+    DB_USER=craftcms
+    DB_PASSWORD=SecretPassword
+    ```
+
+1. Set permissions (*for test installs only*): `chmod -R 777 .`
+1. Run `docker-compose up`
+1. Visit http://localhost:8080/?p=admin/install
+1. Continue through setup
+
 ## Installing Extensions
 
 This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 7.4. Note that it switches back to `www-data` after installation:
