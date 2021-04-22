@@ -5,6 +5,9 @@
 ### Added
 - Added an include to `/app/nitro.conf` to the `craftcms/nginx:<ver>-dev` images.
 
+### Changed
+- `/robots.txt` requests are now passed to `index.php` if the file does not exist.
+
 ## 1.2.6 - 2021-03-30
 
 ### Added
