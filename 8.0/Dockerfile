@@ -49,7 +49,10 @@ RUN set -ex && \
     libpng-dev \
     libjpeg-turbo-dev \
     libxml2-dev \
-    icu-dev && \
+    icu-dev \
+    jpegoptim \
+    libwebp-tools \
+    optipng && \
     docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install -j$(nproc) \
     bcmath \
