@@ -34,7 +34,8 @@ ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
 RUN set -ex && \
-    apk --no-cache add \
+    apk upgrade --no-cache && \
+    apk add --no-cache \
     postgresql-client \
     postgresql-dev \
     autoconf \
