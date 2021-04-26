@@ -1,6 +1,6 @@
 .PHONY: build
 
-PHP_TEST ?= 8.0
+LOCAL_PHP_VERSION ?= 8.0
 
 build: all-cli all-cli-dev all-php-fpm all-php-fpm-dev all-nginx all-nginx-dev
 
@@ -170,9 +170,27 @@ setup:
 	docker buildx use all-platforms
 	docker buildx inspect --bootstrap
 
+local:
+	docker buildx build --load --platform linux/amd64 \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
+		--build-arg PROJECT_TYPE=fpm \
+		-t craftcms/php-fpm:${LOCAL_PHP_VERSION} ${LOCAL_PHP_VERSION}
+	docker buildx build --load --platform linux/amd64 \
+		-f ${LOCAL_PHP_VERSION}/dev.Dockerfile \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
+		--build-arg PROJECT_TYPE=php-fpm \
+		-t craftcms/php-fpm:${LOCAL_PHP_VERSION}-dev ${LOCAL_PHP_VERSION}
+	docker buildx build --load --platform linux/amd64 \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
+		-t craftcms/nginx:${LOCAL_PHP_VERSION} nginx
+	docker buildx build --load --platform linux/amd64 \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION}-dev \
+		--build-arg NGINX_CONF=dev.default.conf \
+		-t craftcms/nginx:${LOCAL_PHP_VERSION}-dev nginx
+
 run:
 	docker buildx build --load --platform linux/amd64 \
-		--build-arg PHP_VERSION=${PHP_TEST} \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		--build-arg PROJECT_TYPE=fpm \
-		-t craftcms/php-fpm:${PHP_TEST} ${PHP_TEST}
-	docker run --rm -it craftcms/php-fpm:${PHP_TEST} sh
+		-t craftcms/php-fpm:${LOCAL_PHP_VERSION} ${LOCAL_PHP_VERSION}
+	docker run --rm -it craftcms/php-fpm:${LOCAL_PHP_VERSION} sh
