@@ -3,7 +3,7 @@
 ## 1.2.8 - 2021-04-22
 
 ### Fixed
-- Fixed an issue with the includes file on `dev` images.
+- Fixed an issue with the includes file on `dev` images. 
 
 ## 1.2.7 - 2021-04-22
 
