@@ -69,7 +69,8 @@ RUN set -ex && \
     libjpeg-turbo-dev \
     autoconf \
     g++ \
-    make
+    make \
+    shadow
 
 # https://github.com/docker-library/php/issues/1121
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
@@ -82,6 +83,12 @@ COPY blackfire-install.sh /tmp/blackfire-install.sh
 
 # run the installation script
 RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
+
+# add user update functionality
+COPY updateUserId.sh /opt/updateUserId.sh
+
+# update run command to execute update user script before system run
+RUN sed '/^exec \"\$\@\"/i /bin/sh /opt/updateUserId.sh;' /usr/local/bin/docker-php-entrypoint > /usr/local/bin/docker-php-entrypoint
 
 # make the directories and set permissions
 RUN mkdir -p /app
