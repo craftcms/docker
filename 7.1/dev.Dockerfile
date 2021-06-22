@@ -35,9 +35,6 @@ RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir
 # downgrade composer to version 1
 RUN set -ex && composer self-update --1
 
-# expose the xdebug port
-EXPOSE 9003
-
 # expose additional ports for node
 EXPOSE 3000 3001
 
