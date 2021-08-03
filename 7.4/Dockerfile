@@ -1,6 +1,9 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
+FROM alpine:3.13 AS iconv-build
+RUN apk add --no-cache gnu-libiconv
+
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # setup general options for environment variables
@@ -45,7 +48,6 @@ RUN set -ex && \
     libpng \
     libjpeg-turbo \
     freetype-dev \
-    gnu-libiconv=1.15-r3 \
     libpng-dev \
     libjpeg-turbo-dev \
     libxml2-dev \
@@ -77,6 +79,9 @@ RUN set -ex && \
     g++ \
     make \
     imagemagick-dev
+
+# https://github.com/craftcms/docker/issues/16
+COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # https://github.com/docker-library/php/issues/1121
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
