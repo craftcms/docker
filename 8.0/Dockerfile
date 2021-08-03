@@ -34,6 +34,9 @@ ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
 RUN set -ex && \
+    # https://github.com/craftcms/docker/issues/16
+    apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ gnu-libiconv=1.15-r3 && \
+
     apk --no-cache add \
     postgresql-client \
     postgresql-dev \
@@ -41,7 +44,6 @@ RUN set -ex && \
     g++ \
     make \
     freetype \
-    gnu-libiconv=1.15-r3 \
     libzip-dev \
     libpng \
     libjpeg-turbo \
