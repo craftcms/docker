@@ -1,6 +1,9 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
+FROM alpine:3.13 AS iconv-build
+RUN apk add --no-cache gnu-libiconv
+
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine
 
 # setup general options for environment variables
@@ -34,9 +37,6 @@ ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
 RUN set -ex && \
-    # https://github.com/craftcms/docker/issues/16
-    apk --no-cache add --repository http://dl-cdn.alpinelinux.org/alpine/v3.13/community/ gnu-libiconv=1.15-r3 && \
-
     apk --no-cache add \
     postgresql-client \
     postgresql-dev \
@@ -44,6 +44,7 @@ RUN set -ex && \
     g++ \
     make \
     freetype \
+    gnu-libiconv \
     libzip-dev \
     libpng \
     libjpeg-turbo \
@@ -72,6 +73,9 @@ RUN set -ex && \
     autoconf \
     g++ \
     make
+
+# https://github.com/craftcms/docker/issues/16
+COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # https://github.com/docker-library/php/issues/1121
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
