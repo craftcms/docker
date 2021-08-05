@@ -36,27 +36,26 @@ ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
-RUN set -ex && \
-    apk upgrade --no-cache && \
-    apk add --no-cache \
-    postgresql-dev \
-    autoconf \
-    g++ \
-    make \
-    freetype \
+RUN set -ex \
+    && apk upgrade --no-cache \
+    && apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
+    libxml2-dev \
     libzip-dev \
-    libpng \
-    libjpeg-turbo \
+    icu-dev \
+    postgresql-dev \
+    imagemagick-dev \
     freetype-dev \
     libpng-dev \
     libjpeg-turbo-dev \
-    libxml2-dev \
-    icu-dev \
+    && apk add --no-cache --virtual .persistent-deps \
+    imagemagick \
+    libjpeg-turbo \
     jpegoptim \
     libwebp-tools \
-    optipng && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install -j$(nproc) \
+    optipng \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \
     pdo \
@@ -65,16 +64,20 @@ RUN set -ex && \
     intl \
     soap \
     opcache \
-    zip && \
-    pecl install redis && \
-    docker-php-ext-enable redis && \
-    apk del --no-cache \
-    freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    autoconf \
-    g++ \
-    make
+    zip \
+    && pecl install \
+    redis \
+    imagick \
+    && docker-php-ext-enable \
+    imagick \
+    redis \
+    && RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
+    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+    | sort -u \
+    | xargs -r apk info --installed \
+    | sort -u)" \
+    && apk add --no-cache --virtual .runtime-deps $RUNTIME_DEPS \
+    && apk del --no-network .build-deps
 
 # https://github.com/craftcms/docker/issues/16
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
