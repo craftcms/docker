@@ -40,34 +40,36 @@ RUN set -ex \
     && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
+    freetype-dev \
+    icu-dev \
+    imagemagick-dev \
+    libjpeg-turbo-dev \
+    libpng-dev \
     libxml2-dev \
     libzip-dev \
-    icu-dev \
     postgresql-dev \
-    imagemagick-dev \
-    freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
     && apk add --no-cache --virtual .persistent-deps \
+    gifsicle \
     imagemagick \
-    libjpeg-turbo \
     jpegoptim \
+    libjpeg-turbo-utils \
     libwebp-tools \
     optipng \
+    pngquant \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \
+    intl \
+    opcache \
     pdo \
     pdo_mysql \
     pdo_pgsql \
-    intl \
     soap \
-    opcache \
     zip \
     && pecl install \
-    redis \
     imagick \
+    redis \
     && docker-php-ext-enable \
     imagick \
     redis \
@@ -81,6 +83,11 @@ RUN set -ex \
 
 # https://github.com/craftcms/docker/issues/16
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+
+# mozjpeg is not available in alpine
+COPY --from=bugoman/mozjpeg /opt/mozjpeg /opt/mozjpeg
+RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
+RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
 # https://github.com/docker-library/php/issues/1121
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
