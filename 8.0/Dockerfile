@@ -39,7 +39,6 @@ ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 RUN set -ex && \
     apk upgrade --no-cache && \
     apk add --no-cache \
-    postgresql-client \
     postgresql-dev \
     autoconf \
     g++ \
