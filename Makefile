@@ -194,3 +194,11 @@ run:
 		--build-arg PROJECT_TYPE=fpm \
 		-t craftcms/php-fpm:${LOCAL_PHP_VERSION} ${LOCAL_PHP_VERSION}
 	docker run --rm -it craftcms/php-fpm:${LOCAL_PHP_VERSION} sh
+
+run-dev:
+	docker buildx build --load --platform linux/amd64 \
+		-f ${LOCAL_PHP_VERSION}/dev.Dockerfile \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
+		--build-arg PROJECT_TYPE=php-fpm \
+		-t craftcms/php-fpm:${LOCAL_PHP_VERSION}-dev ${LOCAL_PHP_VERSION}
+	docker run --rm -it craftcms/php-fpm:${LOCAL_PHP_VERSION}-dev sh
