@@ -17,17 +17,6 @@ all-cli:
 		--build-arg PHP_VERSION=7.3 \
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:7.3 7.3
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.2 \
-		--build-arg PROJECT_TYPE=cli \
-		-t craftcms/cli:7.2 7.2
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.1 \
-		--build-arg PROJECT_TYPE=cli \
-		-t craftcms/cli:7.1 7.1
-	docker buildx build --load --platform linux/amd64 --builder all-platforms --build-arg PHP_VERSION=7.0 \
-		--build-arg PROJECT_TYPE=cli \
-		-t craftcms/cli:7.0 7.0
 
 all-cli-dev:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
@@ -45,21 +34,6 @@ all-cli-dev:
 		--build-arg PHP_VERSION=7.3 \
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:7.3-dev 7.3
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 7.2/dev.Dockerfile \
-		--build-arg PHP_VERSION=7.2 \
-		--build-arg PROJECT_TYPE=cli \
-		-t craftcms/cli:7.2-dev 7.2
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 7.1/dev.Dockerfile \
-		--build-arg PHP_VERSION=7.1 \
-		--build-arg PROJECT_TYPE=cli \
-		-t craftcms/cli:7.1-dev 7.1
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 7.0/dev.Dockerfile \
-		--build-arg PHP_VERSION=7.0 \
-		--build-arg PROJECT_TYPE=cli \
-		-t craftcms/cli:7.0-dev 7.0
 
 all-php-fpm:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
@@ -74,18 +48,6 @@ all-php-fpm:
 		--build-arg PHP_VERSION=7.3 \
 		--build-arg PROJECT_TYPE=fpm \
 		-t craftcms/php-fpm:7.3 7.3
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.2 \
-		--build-arg PROJECT_TYPE=fpm \
-		-t craftcms/php-fpm:7.2 7.2
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.1 \
-		--build-arg PROJECT_TYPE=fpm \
-		-t craftcms/php-fpm:7.1 7.1
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.0 \
-		--build-arg PROJECT_TYPE=fpm \
-		-t craftcms/php-fpm:7.0 7.0
 
 all-php-fpm-dev:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
@@ -103,21 +65,6 @@ all-php-fpm-dev:
 		--build-arg PHP_VERSION=7.3 \
 		--build-arg PROJECT_TYPE=php-fpm \
 		-t craftcms/php-fpm:7.3-dev 7.3
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 7.2/dev.Dockerfile \
-		--build-arg PHP_VERSION=7.2 \
-		--build-arg PROJECT_TYPE=php-fpm \
-		-t craftcms/php-fpm:7.2-dev 7.2
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 7.1/dev.Dockerfile \
-		--build-arg PHP_VERSION=7.1 \
-		--build-arg PROJECT_TYPE=php-fpm \
-		-t craftcms/php-fpm:7.1-dev 7.1
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		-f 7.0/dev.Dockerfile \
-		--build-arg PHP_VERSION=7.0 \
-		--build-arg PROJECT_TYPE=php-fpm \
-		-t craftcms/php-fpm:7.0-dev 7.0
 
 all-nginx:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
@@ -129,15 +76,7 @@ all-nginx:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		--build-arg PHP_VERSION=7.3 \
 		-t craftcms/nginx:7.3 nginx
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.2 \
-		-t craftcms/nginx:7.2 nginx
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.1 \
-		-t craftcms/nginx:7.1 nginx
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.0 \
-		-t craftcms/nginx:7.0 nginx
+
 
 all-nginx-dev:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
@@ -152,18 +91,6 @@ all-nginx-dev:
 		--build-arg PHP_VERSION=7.3-dev \
 		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.3-dev nginx
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.2-dev \
-		--build-arg NGINX_CONF=dev.default.conf \
-		-t craftcms/nginx:7.2-dev nginx
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.1-dev \
-		--build-arg NGINX_CONF=dev.default.conf \
-		-t craftcms/nginx:7.1-dev nginx
-	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.0-dev \
-		--build-arg NGINX_CONF=dev.default.conf \
-		-t craftcms/nginx:7.0-dev nginx
 
 setup:
 	docker buildx create --name all-platforms --platform linux/amd64,linux/arm64
