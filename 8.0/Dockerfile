@@ -48,7 +48,7 @@ RUN set -ex \
     libxml2-dev \
     libzip-dev \
     postgresql-dev \
-    && apk add --no-cache --virtual .persistent-deps \
+    && apk add --no-cache \
     gifsicle \
     imagemagick \
     jpegoptim \
