@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        php: ["8.0", "7.4", "7.3", "7.2", "7.1", "7.0"]
+        php: ["8.0", "7.4", "7.3"]
     name: php-fpm and nginx ${{ matrix.php }} images
     steps:
       - name: Check out the repository
