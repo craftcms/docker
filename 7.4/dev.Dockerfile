@@ -9,25 +9,19 @@ USER root
 
 COPY craft-cms-xdebug.ini /usr/local/etc/php/conf.d
 
-RUN set -ex && \
-    apk --no-cache add \
-    autoconf \
-    g++ \
+RUN set -ex \
+    && apk --no-cache add --virtual .build-deps $PHPIZE_DEPS \
+    && apk --no-cache add \
     git \
-    make \
-    mysql-client \
     mariadb-connector-c \
+    mysql-client \
     nodejs \
     npm \
     postgresql-client \
-    && \
-    pecl install xdebug && \
-    echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini && \
-    docker-php-ext-enable xdebug && \
-    apk del --no-cache \
-    autoconf \
-    g++ \
-    make
+    && pecl install xdebug \
+    && echo "zend_extension=$(find /usr/local/lib/php/extensions/ -name xdebug.so)" > /usr/local/etc/php/conf.d/xdebug.ini\
+    && docker-php-ext-enable xdebug \
+    && apk del --no-network .build-deps
 
 # install composer
 RUN set -ex && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer

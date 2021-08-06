@@ -36,52 +36,58 @@ ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
-RUN set -ex && \
-    apk --no-cache add \
-    postgresql-client \
-    postgresql-dev \
-    autoconf \
-    g++ \
-    make \
-    freetype \
-    libzip-dev \
-    libpng \
-    libjpeg-turbo \
+RUN set -ex \
+    && apk upgrade --no-cache \
+    && apk add --no-cache --virtual .build-deps \
+    $PHPIZE_DEPS \
     freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    libxml2-dev \
     icu-dev \
-    imagemagick \
     imagemagick-dev \
-    imagemagick-libs \
+    libjpeg-turbo-dev \
+    libpng-dev \
+    libxml2-dev \
+    libzip-dev \
+    postgresql-dev \
+    && apk add --no-cache \
+    gifsicle \
+    imagemagick \
     jpegoptim \
+    libjpeg-turbo-utils \
     libwebp-tools \
-    optipng && \
-    docker-php-ext-configure gd --with-freetype --with-jpeg && \
-    docker-php-ext-install -j$(nproc) \
+    optipng \
+    pngquant \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \
+    intl \
+    opcache \
     pdo \
     pdo_mysql \
     pdo_pgsql \
-    intl \
     soap \
-    opcache \
-    zip && \
-    pecl install imagick redis && \
-    docker-php-ext-enable imagick redis && \
-    apk del --no-cache \
-    freetype-dev \
-    libpng-dev \
-    libjpeg-turbo-dev \
-    autoconf \
-    g++ \
-    make \
-    imagemagick-dev
+    zip \
+    && pecl install \
+    imagick \
+    redis \
+    && docker-php-ext-enable \
+    imagick \
+    redis \
+    && RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
+    | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
+    | sort -u \
+    | xargs -r apk info --installed \
+    | sort -u)" \
+    && apk add --no-cache --virtual .runtime-deps $RUNTIME_DEPS \
+    && apk del --no-network .build-deps
 
 # https://github.com/craftcms/docker/issues/16
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+
+# mozjpeg is not available in alpine
+COPY --from=bugoman/mozjpeg /opt/mozjpeg /opt/mozjpeg
+RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
+RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
 # https://github.com/docker-library/php/issues/1121
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
