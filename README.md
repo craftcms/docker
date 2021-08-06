@@ -17,7 +17,7 @@ Each image and PHP version also provides a `-dev` variant which has Xdebug insta
 The `php-fpm` image is provided as the base image (and is also used for the `nginx` image) and requires you "bring your own server".
 
 | Image                      | Use | Environment   |
-|----------------------------|-----|---------------|
+| -------------------------- | --- | ------------- |
 | `craftcms/php-fpm:8.0`     | web | `production`  |
 | `craftcms/php-fpm:8.0-dev` | web | `development` |
 | `craftcms/php-fpm:7.4`     | web | `production`  |
@@ -38,7 +38,7 @@ The `php-fpm` image is provided as the base image (and is also used for the `ngi
 The `nginx` image is used for a typical installation and includes an Nginx server configured for Craft CMS and php-fpm.
 
 | Image                    | Use | Environment   |
-|--------------------------|-----|---------------|
+| ------------------------ | --- | ------------- |
 | `craftcms/nginx:8.0`     | web | `production`  |
 | `craftcms/nginx:8.0-dev` | web | `development` |
 | `craftcms/nginx:7.4`     | web | `production`  |
@@ -58,20 +58,20 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 
 The image type `cli` which is used to run queues, migrations, etc. and the image does not expose ports for HTTP/S or PHP-FPM.
 
-| Image                      | Use   | Environment   |
-|----------------------------|-------|---------------|
-| `craftcms/cli:8.0`         | queue | `production`  |
-| `craftcms/cli:8.0-dev`     | queue | `development` |
-| `craftcms/cli:7.4`         | queue | `production`  |
-| `craftcms/cli:7.4-dev`     | queue | `development` |
-| `craftcms/cli:7.3`         | queue | `production`  |
-| `craftcms/cli:7.3-dev`     | queue | `development` |
-| `craftcms/cli:7.2`         | queue | `production`  |
-| `craftcms/cli:7.2-dev`     | queue | `development` |
-| `craftcms/cli:7.1`         | queue | `production`  |
-| `craftcms/cli:7.1-dev`     | queue | `development` |
-| `craftcms/cli:7.0`         | queue | `production`  |
-| `craftcms/cli:7.0-dev`     | queue | `development` |
+| Image                  | Use   | Environment   |
+| ---------------------- | ----- | ------------- |
+| `craftcms/cli:8.0`     | queue | `production`  |
+| `craftcms/cli:8.0-dev` | queue | `development` |
+| `craftcms/cli:7.4`     | queue | `production`  |
+| `craftcms/cli:7.4-dev` | queue | `development` |
+| `craftcms/cli:7.3`     | queue | `production`  |
+| `craftcms/cli:7.3-dev` | queue | `development` |
+| `craftcms/cli:7.2`     | queue | `production`  |
+| `craftcms/cli:7.2-dev` | queue | `development` |
+| `craftcms/cli:7.1`     | queue | `production`  |
+| `craftcms/cli:7.1-dev` | queue | `development` |
+| `craftcms/cli:7.0`     | queue | `production`  |
+| `craftcms/cli:7.0-dev` | queue | `development` |
 
 ## Usage
 
@@ -83,12 +83,12 @@ This example uses a Docker [multi-stage build](https://docs.docker.com/develop/d
 
 ```dockerfile
 # use a multi-stage build for dependencies
-FROM composer:1 as vendor
+FROM composer:2 as vendor
 COPY composer.json composer.json
 COPY composer.lock composer.lock
 RUN composer install --ignore-platform-reqs --no-interaction --prefer-dist
 
-FROM craftcms/php-fpm:7.4
+FROM craftcms/php-fpm:8.0
 
 # the user is `www-data`, so we copy the files using the user and group
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
@@ -99,12 +99,12 @@ This example uses the `craftcms/nginx` repository and installs the `mysql-client
 
 ```dockerfile
 # composer dependencies
-FROM composer:1 as vendor
+FROM composer:2 as vendor
 COPY composer.json composer.json
 COPY composer.lock composer.lock
 RUN composer install --ignore-platform-reqs --no-interaction --prefer-dist
 
-FROM craftcms/nginx:7.4
+FROM craftcms/nginx:8.0
 
 # switch to the root user to install mysql tools
 USER root
@@ -127,41 +127,55 @@ The image is designed to be run by a `www-data` user that owns of the image’s 
 We recommend running Docker locally if you’re shipping your project to a Docker-based envrionment such as Amazon Web Services Elastic Container Services (ECS). The following Docker Compose file will setup your local environment with the following:
 
 1. `web` service that will handle running PHP and Nginx
-2. `mysql` service that will store your content
+2. `postgres` service that will store your content
 3. `console` service that will run the queue locally
 4. `redis` service that will handle queue and caching
 
 ```yaml
 version: "3.6"
 services:
-  web:
-    image: craftcms/nginx:7.4-dev
-    volumes:
+  console:
+    image: craftcms/cli:8.0-dev
+    env_file: &env_file .env
+    depends_on: &depends_on
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes: &volumes
       - .:/app
+    command: php craft queue/listen
+
+  web:
+    image: craftcms/nginx:8.0-dev
     ports:
       - 8080:8080
-    env_file: .env
-  console:
-    image: craftcms/cli:7.4-dev
-    volumes:
-      - .:/app
-    env_file: .env
-    command: ["./craft", "queue/listen"]
-  mysql:
-    image: mysql:8.0
+    env_file: *env_file
+    depends_on: *depends_on
+    volumes: *volumes
+
+  postgres:
+    image: postgres:13-alpine
     ports:
       - 3306:3306
     environment:
-      MYSQL_ROOT_PASSWORD: SuperPassword123456!
-      MYSQL_DATABASE: dev_craftcms
-      MYSQL_USER: craftcms
-      MYSQL_PASSWORD: SecretPassword
+      POSTGRES_DB: dev_craftcms
+      POSTGRES_USER: craftcms
+      POSTGRES_PASSWORD: SecretPassword
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      retries: 3
+
   redis:
     image: redis:5-alpine
     ports:
       - 6379:6379
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+
 volumes:
   db_data:
 ```
@@ -171,7 +185,7 @@ volumes:
 This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 7.4. Note that it switches back to `www-data` after installation:
 
 ```dockerfile
-FROM craftcms/php-fpm:7.4
+FROM craftcms/php-fpm:8.0
 
 # switch to the root user
 USER root
@@ -193,7 +207,7 @@ In this example, we’re setting the PHP memory limit to `512M` rather than the 
 version: "3.6"
 services:
   php-fpm:
-    image: craftcms/php-fpm:7.4-dev
+    image: craftcms/php-fpm:8.0-dev
     volumes:
       - .:/app
     env_file: .env
@@ -205,7 +219,7 @@ services:
 ### Customizable Settings
 
 | PHP Setting                       | Environment Variable                  | Default Value |
-|-----------------------------------|---------------------------------------|---------------|
+| --------------------------------- | ------------------------------------- | ------------- |
 | `memory_limit`                    | `PHP_MEMORY_LIMIT`                    | `256M`        |
 | `max_execution_time`              | `PHP_MAX_EXECUTION_TIME`              | `120`         |
 | `upload_max_filesize`             | `PHP_UPLOAD_MAX_FILESIZE`             | `20M`         |
