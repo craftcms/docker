@@ -95,7 +95,7 @@ COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
 COPY --chown=www-data:www-data . .
 ```
 
-This example uses the `craftcms/nginx` repository and installs the `mysql-client` tools to enable backups from the Craft CMS control panel.
+This example uses the `craftcms/nginx` repository and installs the database tools to enable backups from the Craft CMS control panel.
 
 ```dockerfile
 # composer dependencies
@@ -108,7 +108,7 @@ FROM craftcms/nginx:8.0
 
 # switch to the root user to install mysql tools
 USER root
-RUN apk add --no-cache mysql-client
+RUN apk add --no-cache mysql-client mariadb-connector-c postgres-client
 USER www-data
 
 # the user is `www-data`, so we copy the files using the user and group
