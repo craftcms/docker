@@ -42,6 +42,7 @@ RUN set -ex \
     $PHPIZE_DEPS \
     freetype-dev \
     icu-dev \
+    libwebp-dev \
     imagemagick-dev \
     libjpeg-turbo-dev \
     libpng-dev \
@@ -56,7 +57,10 @@ RUN set -ex \
     libwebp-tools \
     optipng \
     pngquant \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure gd \
+    --with-freetype \
+    --with-jpeg \
+    --with-webp \
     && docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \
