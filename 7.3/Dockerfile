@@ -45,6 +45,7 @@ RUN set -ex \
     imagemagick-dev \
     libjpeg-turbo-dev \
     libpng-dev \
+    libwebp-dev \
     libxml2-dev \
     libzip-dev \
     postgresql-dev \
@@ -56,7 +57,12 @@ RUN set -ex \
     libwebp-tools \
     optipng \
     pngquant \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-configure gd \
+    --with-gd \
+    --with-freetype-dir \
+    --with-png-dir \
+    --with-jpeg-dir \
+    --with-webp-dir \
     && docker-php-ext-install -j$(nproc) \
     bcmath \
     gd \
