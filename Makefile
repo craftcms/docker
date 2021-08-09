@@ -7,6 +7,10 @@ snyk: snyk-all-cli snyk-all-cli-dev snyk-all-php-fpm snyk-all-php-fpm-dev snyk-a
 
 all-cli:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+		--build-arg PHP_VERSION=8.1-rc \
+		--build-arg PROJECT_TYPE=cli \
+		-t craftcms/cli:8.1-rc 8.1-rc
+	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		--build-arg PHP_VERSION=8.0 \
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:8.0 8.0
@@ -20,6 +24,11 @@ all-cli:
 		-t craftcms/cli:7.3 7.3
 
 all-cli-dev:
+	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+		-f 8.1-rc/dev.Dockerfile \
+		--build-arg PHP_VERSION=8.1-rc \
+		--build-arg PROJECT_TYPE=cli \
+		-t craftcms/cli:8.1-rc-dev 8.1-rc
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		-f 8.0/dev.Dockerfile \
 		--build-arg PHP_VERSION=8.0 \
@@ -38,6 +47,10 @@ all-cli-dev:
 
 all-php-fpm:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+		--build-arg PHP_VERSION=8.1-rc \
+		--build-arg PROJECT_TYPE=fpm \
+		-t craftcms/php-fpm:8.1-rc 8.1-rc
+	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		--build-arg PHP_VERSION=8.0 \
 		--build-arg PROJECT_TYPE=fpm \
 		-t craftcms/php-fpm:8.0 8.0
@@ -51,6 +64,11 @@ all-php-fpm:
 		-t craftcms/php-fpm:7.3 7.3
 
 all-php-fpm-dev:
+	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+		-f 8.1-rc/dev.Dockerfile \
+		--build-arg PHP_VERSION=8.1-rc \
+		--build-arg PROJECT_TYPE=php-fpm \
+		-t craftcms/php-fpm:8.1-rc-dev 8.1-rc
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		-f 8.0/dev.Dockerfile \
 		--build-arg PHP_VERSION=8.0 \
@@ -69,6 +87,9 @@ all-php-fpm-dev:
 
 all-nginx:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+		--build-arg PHP_VERSION=8.1-rc \
+		-t craftcms/nginx:8.1-rc nginx
+	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		--build-arg PHP_VERSION=8.0 \
 		-t craftcms/nginx:8.0 nginx
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
@@ -80,6 +101,10 @@ all-nginx:
 
 
 all-nginx-dev:
+	docker buildx build --load --platform linux/amd64 --builder all-platforms \
+		--build-arg PHP_VERSION=8.1-rc \
+		--build-arg NGINX_CONF=dev.default.conf \
+		-t craftcms/nginx:8.1-rc-dev nginx
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
 		--build-arg PHP_VERSION=8.0 \
 		--build-arg NGINX_CONF=dev.default.conf \
@@ -153,36 +178,42 @@ snyk-local:
 
 snyk-all-cli:
 	snyk container test \
-		craftcms/cli:8.0 \
-		craftcms/cli:7.4 \
-		craftcms/cli:7.3
+	craftcms/cli:8.1-rc \
+	craftcms/cli:8.0 \
+	craftcms/cli:7.4 \
+	craftcms/cli:7.3
 
 snyk-all-cli-dev:
 	snyk container test \
-		craftcms/cli:8.0-dev \
-		craftcms/cli:7.4-dev \
-		craftcms/cli:7.3-dev
+	craftcms/cli:8.1-rc-dev \
+	craftcms/cli:8.0-dev \
+	craftcms/cli:7.4-dev \
+	craftcms/cli:7.3-dev
 
 snyk-all-php-fpm:
 	snyk container test \
-		craftcms/php-fpm:8.0 \
-		craftcms/php-fpm:7.4 \
-		craftcms/php-fpm:7.3
+	craftcms/php-fpm:8.1-rc \
+	craftcms/php-fpm:8.0 \
+	craftcms/php-fpm:7.4 \
+	craftcms/php-fpm:7.3
 
 snyk-all-php-fpm-dev:
 	snyk container test \
-		craftcms/php-fpm:8.0-dev \
-		craftcms/php-fpm:7.4-dev \
-		craftcms/php-fpm:7.3-dev
+	craftcms/php-fpm:8.1-rc-dev \
+	craftcms/php-fpm:8.0-dev \
+	craftcms/php-fpm:7.4-dev \
+	craftcms/php-fpm:7.3-dev
 
 snyk-all-nginx:
 	snyk container test \
-		craftcms/nginx:8.0 \
-		craftcms/nginx:7.4 \
-		craftcms/nginx:7.3
+	craftcms/nginx:8.1-rc \
+	craftcms/nginx:8.0 \
+	craftcms/nginx:7.4 \
+	craftcms/nginx:7.3
 
 snyk-all-nginx-dev:
 	snyk container test \
-		craftcms/nginx:8.0-dev \
-		craftcms/nginx:7.4-dev \
-		craftcms/nginx:7.3-dev
+	craftcms/nginx:8.1-rc-dev \
+	craftcms/nginx:8.0-dev \
+	craftcms/nginx:7.4-dev \
+	craftcms/nginx:7.3-dev
