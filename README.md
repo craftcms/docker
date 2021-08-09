@@ -77,9 +77,7 @@ The image type `cli` which is used to run queues, migrations, etc. and the image
 
 ## Usage
 
-There are two main types of images: `php-fpm` for handling the web application, and `cli` for running queues and other Craft CLI commands.
-
-> Note: We purposely do not provide a web server image because that choice depends on your project needs. We do, however, provide examples illustrating how to use Nginx or Caddy with the `php-fpm` images.
+There are two main types of images: `php-fpm` for handling the web application, and `cli` for running queues and other Craft CLI commands. Additionally, we provide an `nginx` image, which combines `php-fpm` and `nginx` into a single image for simplicity and ease of development.
 
 This example uses a Docker [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) to install composer dependencies inside a separate layer before copying them into the final image.
 
@@ -140,13 +138,13 @@ version: "3.6"
 services:
   console:
     image: craftcms/cli:8.0-dev
-    env_file: &env_file .env
-    depends_on: &depends_on
+    env_file: .env
+    depends_on:
       mysql:
         condition: service_healthy
       redis:
         condition: service_healthy
-    volumes: &volumes
+    volumes:
       - .:/app
     command: php craft queue/listen
 
@@ -154,9 +152,14 @@ services:
     image: craftcms/nginx:8.0-dev
     ports:
       - 8080:8080
-    env_file: *env_file
-    depends_on: *depends_on
-    volumes: *volumes
+    env_file: .env
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
 
   postgres:
     image: postgres:13-alpine
