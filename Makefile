@@ -80,15 +80,15 @@ all-nginx:
 
 all-nginx-dev:
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=8.0-dev \
+		--build-arg PHP_VERSION=8.0 \
 		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:8.0-dev nginx
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.4-dev \
+		--build-arg PHP_VERSION=7.4 \
 		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.4-dev nginx
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=7.3-dev \
+		--build-arg PHP_VERSION=7.3 \
 		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:7.3-dev nginx
 
@@ -107,21 +107,22 @@ local:
 		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		--build-arg PROJECT_TYPE=php-fpm \
 		-t craftcms/php-fpm:${LOCAL_PHP_VERSION}-dev ${LOCAL_PHP_VERSION}
+
 	docker buildx build --load --platform linux/amd64 \
-		-f ${LOCAL_PHP_VERSION}/dev.Dockerfile \
 		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:${LOCAL_PHP_VERSION} ${LOCAL_PHP_VERSION}
 	docker buildx build --load --platform linux/amd64 \
 		-f ${LOCAL_PHP_VERSION}/dev.Dockerfile \
-		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION}-dev \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:${LOCAL_PHP_VERSION}-dev ${LOCAL_PHP_VERSION}
+
 	docker buildx build --load --platform linux/amd64 \
 		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		-t craftcms/nginx:${LOCAL_PHP_VERSION} nginx
 	docker buildx build --load --platform linux/amd64 \
-		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION}-dev \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		--build-arg NGINX_CONF=dev.default.conf \
 		-t craftcms/nginx:${LOCAL_PHP_VERSION}-dev nginx
 
