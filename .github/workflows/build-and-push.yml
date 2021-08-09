@@ -11,7 +11,7 @@ jobs:
       PUSH_TO_REGISTRY: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: ${{ !env.PUSH_TO_REGISTRY }}
+      fail-fast: true
       matrix:
         php: ["8.0", "7.4", "7.3"]
     name: php-fpm and nginx ${{ matrix.php }} images
