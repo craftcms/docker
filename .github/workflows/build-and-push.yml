@@ -26,7 +26,7 @@ jobs:
           install: true
       - name: Login to Docker Hub
         uses: docker/login-action@v1
-        if: ${{ env.PUSH_TO_REGISTRY }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
@@ -44,18 +44,18 @@ jobs:
             PROJECT_TYPE=fpm
             PHP_VERSION=${{ matrix.php }}
 
-      - name: Build craftcms/php-fpm:${{ matrix.php }}-dev
-        id: build-php-fpm-dev
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ matrix.php }}
-          file: ${{ matrix.php }}/dev.Dockerfile
-          push: ${{ env.PUSH_TO_REGISTRY }}
-          platforms: linux/amd64,linux/arm64
-          tags: craftcms/php-fpm:${{ matrix.php }}-dev
-          build-args: |
-            PROJECT_TYPE=php-fpm
-            PHP_VERSION=${{ matrix.php }}
+      # - name: Build craftcms/php-fpm:${{ matrix.php }}-dev
+      #   id: build-php-fpm-dev
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ${{ matrix.php }}
+      #     file: ${{ matrix.php }}/dev.Dockerfile
+      #     push: ${{ env.PUSH_TO_REGISTRY }}
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: craftcms/php-fpm:${{ matrix.php }}-dev
+      #     build-args: |
+      #       PROJECT_TYPE=php-fpm
+      #       PHP_VERSION=${{ matrix.php }}
 
       - name: Build craftcms/nginx:${{ matrix.php }}
         id: build-nginx
@@ -69,18 +69,18 @@ jobs:
           build-args: |
             PHP_VERSION=${{ matrix.php }}
 
-      - name: Build craftcms/nginx:${{ matrix.php }}-dev
-        id: build-nginx-dev
-        uses: docker/build-push-action@v2
-        with:
-          context: nginx
-          file: nginx/Dockerfile
-          push: ${{ env.PUSH_TO_REGISTRY }}
-          platforms: linux/amd64,linux/arm64
-          tags: craftcms/nginx:${{ matrix.php }}-dev
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}-dev
-            NGINX_CONF=dev.default.conf
+      # - name: Build craftcms/nginx:${{ matrix.php }}-dev
+      #   id: build-nginx-dev
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: nginx
+      #     file: nginx/Dockerfile
+      #     push: ${{ env.PUSH_TO_REGISTRY }}
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: craftcms/nginx:${{ matrix.php }}-dev
+      #     build-args: |
+      #       PHP_VERSION=${{ matrix.php }}-dev
+      #       NGINX_CONF=dev.default.conf
 
   build-cli:
     needs: build-php-fpm
@@ -120,15 +120,15 @@ jobs:
             PROJECT_TYPE=cli
             PHP_VERSION=${{ matrix.php }}
 
-      - name: Build craftcms/cli:${{ matrix.php }}-dev
-        id: build-cli-dev
-        uses: docker/build-push-action@v2
-        with:
-          context: ${{ matrix.php }}
-          file: ${{ matrix.php }}/dev.Dockerfile
-          push: ${{ env.PUSH_TO_REGISTRY }}
-          platforms: linux/amd64,linux/arm64
-          tags: craftcms/cli:${{ matrix.php }}-dev
-          build-args: |
-            PROJECT_TYPE=cli
-            PHP_VERSION=${{ matrix.php }}
+      # - name: Build craftcms/cli:${{ matrix.php }}-dev
+      #   id: build-cli-dev
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: ${{ matrix.php }}
+      #     file: ${{ matrix.php }}/dev.Dockerfile
+      #     push: ${{ env.PUSH_TO_REGISTRY }}
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: craftcms/cli:${{ matrix.php }}-dev
+      #     build-args: |
+      #       PROJECT_TYPE=cli
+      #       PHP_VERSION=${{ matrix.php }}
