@@ -13,7 +13,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: ["8.1-rc", "8.0", "7.4", "7.3"]
+        php: ["8.0", "7.4", "7.3"]
     name: php-fpm and nginx ${{ matrix.php }} images
     steps:
       - name: Check out the repository
@@ -75,9 +75,11 @@ jobs:
             NGINX_CONF=dev.default.conf
   build-cli:
     runs-on: ubuntu-latest
+    env:
+      PUSH_TO_REGISTRY: ${{ github.ref == 'refs/heads/main' }}
     strategy:
       matrix:
-        php: ["8.1-rc", "8.0", "7.4", "7.3"]
+        php: ["8.0", "7.4", "7.3"]
     name: cli ${{ matrix.php }} images
     steps:
       - name: Check out the repository
@@ -98,7 +100,7 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          push: ${{ env.PUSH_TO_REGISTRY }}
           platforms: linux/amd64,linux/arm64
           tags: craftcms/cli:${{ matrix.php }}
           build-args: |
@@ -109,7 +111,7 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/dev.Dockerfile
-          platforms: linux/amd64,linux/arm64
+          push: ${{ env.PUSH_TO_REGISTRY }}
           platforms: linux/amd64,linux/arm64
           tags: craftcms/cli:${{ matrix.php }}-dev
           build-args: |
