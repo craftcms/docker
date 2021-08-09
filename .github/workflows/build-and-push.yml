@@ -11,7 +11,7 @@ jobs:
       PUSH_TO_REGISTRY: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: true
+      fail-fast: ${{ ! env.PUSH_TO_REGISTRY }}
       matrix:
         php: ["8.0", "7.4", "7.3"]
     name: php-fpm and nginx ${{ matrix.php }} images
@@ -43,13 +43,6 @@ jobs:
           build-args: |
             PROJECT_TYPE=fpm
             PHP_VERSION=${{ matrix.php }}
-
-      - name: Run Snyk to check Docker image for vulnerabilities
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ steps.build-php-fpm.outputs.digest }}
 
       - name: Build craftcms/php-fpm:${{ matrix.php }}-dev
         id: build-php-fpm-dev
