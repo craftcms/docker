@@ -108,6 +108,16 @@ local:
 		--build-arg PROJECT_TYPE=php-fpm \
 		-t craftcms/php-fpm:${LOCAL_PHP_VERSION}-dev ${LOCAL_PHP_VERSION}
 	docker buildx build --load --platform linux/amd64 \
+		-f ${LOCAL_PHP_VERSION}/dev.Dockerfile \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
+		--build-arg PROJECT_TYPE=cli \
+		-t craftcms/cli:${LOCAL_PHP_VERSION} ${LOCAL_PHP_VERSION}
+	docker buildx build --load --platform linux/amd64 \
+		-f ${LOCAL_PHP_VERSION}/dev.Dockerfile \
+		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION}-dev \
+		--build-arg PROJECT_TYPE=cli \
+		-t craftcms/cli:${LOCAL_PHP_VERSION}-dev ${LOCAL_PHP_VERSION}
+	docker buildx build --load --platform linux/amd64 \
 		--build-arg PHP_VERSION=${LOCAL_PHP_VERSION} \
 		-t craftcms/nginx:${LOCAL_PHP_VERSION} nginx
 	docker buildx build --load --platform linux/amd64 \
