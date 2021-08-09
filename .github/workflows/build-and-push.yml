@@ -57,17 +57,17 @@ jobs:
       #       PROJECT_TYPE=php-fpm
       #       PHP_VERSION=${{ matrix.php }}
 
-      - name: Build craftcms/nginx:${{ matrix.php }}
-        id: build-nginx
-        uses: docker/build-push-action@v2
-        with:
-          context: nginx
-          file: nginx/Dockerfile
-          push: ${{ env.PUSH_TO_REGISTRY }}
-          platforms: linux/amd64,linux/arm64
-          tags: craftcms/nginx:${{ matrix.php }}
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}
+      # - name: Build craftcms/nginx:${{ matrix.php }}
+      #   id: build-nginx
+      #   uses: docker/build-push-action@v2
+      #   with:
+      #     context: nginx
+      #     file: nginx/Dockerfile
+      #     push: ${{ env.PUSH_TO_REGISTRY }}
+      #     platforms: linux/amd64,linux/arm64
+      #     tags: craftcms/nginx:${{ matrix.php }}
+      #     build-args: |
+      #       PHP_VERSION=${{ matrix.php }}
 
       # - name: Build craftcms/nginx:${{ matrix.php }}-dev
       #   id: build-nginx-dev
