@@ -4,11 +4,13 @@ These images are provided as a starting point for your Docker-based Craft CMS de
 
 ## Images
 
-There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:7.4`).
+There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:8.0`).
 
-Each image and PHP version also provides a `-dev` variant which has Xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:7.4-dev`). Images that do not include `-dev` are considered production.
+Each image and PHP version also provides a `-dev` variant which has Xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:8.0-dev`), as well as database tools for creating and restoring backups. Images that do not include `-dev` are considered production.
 
-> Note: you are not required to use `-dev` images for local development, they are provided with Xdebug to make debugging easier.
+> Note: you are not required to use `-dev` images for local development, they are provided with Xdebug and to make debugging easier.
+
+To keep the production images lean and secure, database tools are NOT included by default (they are included in the `-dev` variants). If you want to create database backups from the Craft control panel, you will need to [install these yourself](#database-tools).
 
 ### php-fpm
 
@@ -94,6 +96,8 @@ FROM craftcms/php-fpm:8.0
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
 COPY --chown=www-data:www-data . .
 ```
+
+### Database tools
 
 This example uses the `craftcms/nginx` repository and installs the database tools to enable backups from the Craft CMS control panel. Note: These will be included automatically if using the `-dev` image variants.
 
@@ -182,7 +186,7 @@ volumes:
 
 ## Installing Extensions
 
-This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 7.4. Note that it switches back to `www-data` after installation:
+This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 8.0. Note that it switches back to `www-data` after installation:
 
 ```dockerfile
 FROM craftcms/php-fpm:8.0
