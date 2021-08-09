@@ -5,13 +5,13 @@ on:
       - develop
     tags:
       - '*.*.*'
-env:
-  PUSH_TO_REGISTRY: ${{ github.ref == 'refs/heads/main' }}
 jobs:
   build-php-fpm:
+    env:
+      PUSH_TO_REGISTRY: ${{ github.ref == 'refs/heads/main' }}
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: ${{ !env.PUSH_TO_REGISTRY }}
+      fail-fast: ${{ github.ref != 'refs/heads/main' }}
       matrix:
         php: ["8.0", "7.4", "7.3"]
     name: php-fpm and nginx ${{ matrix.php }} images
@@ -85,6 +85,8 @@ jobs:
   build-cli:
     needs: build-php-fpm
     runs-on: ubuntu-latest
+    env:
+      PUSH_TO_REGISTRY: ${{ github.ref == 'refs/heads/main' }}
     strategy:
       matrix:
         php: ["8.0", "7.4", "7.3"]
