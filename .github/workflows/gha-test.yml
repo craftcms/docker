@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: gha-test
-          file: test.Dockerfile
+          file: gha-test/test.Dockerfile
           push: false
           load: true
           tags: ${{ env.PHP_IMAGE_TAG }}
@@ -59,7 +59,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: gha-test
-          file: test.Dockerfile
+          file: gha-test/test.Dockerfile
           push: true
           platforms: ${{ env.BUILD_PLATFORMS }}
           tags: ${{ env.PHP_IMAGE_TAG }}
