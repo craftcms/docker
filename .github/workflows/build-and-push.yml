@@ -82,29 +82,6 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build craftcms/nginx:${{ matrix.php }}
-        uses: docker/build-push-action@v2
-        with:
-          context: nginx
-          file: nginx/Dockerfile
-          push: ${{ github.event_name == 'release' }}
-          platforms: linux/amd64,linux/arm64
-          tags: craftcms/nginx:${{ matrix.php }}
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}
-
-      - name: Build craftcms/nginx:${{ matrix.php }}-dev
-        uses: docker/build-push-action@v2
-        with:
-          context: nginx
-          file: nginx/Dockerfile
-          push: ${{ github.event_name == 'release' }}
-          platforms: linux/amd64,linux/arm64
-          tags: craftcms/nginx:${{ matrix.php }}-dev
-          build-args: |
-            PHP_VERSION=${{ matrix.php }}-dev
-            NGINX_CONF=dev.default.conf
-
       - name: Build craftcms/php-fpm:${{ matrix.php }}-dev
         uses: docker/build-push-action@v2
         with:
@@ -128,3 +105,26 @@ jobs:
           build-args: |
             PROJECT_TYPE=cli
             PHP_VERSION=${{ matrix.php }}
+
+      - name: Build craftcms/nginx:${{ matrix.php }}
+        uses: docker/build-push-action@v2
+        with:
+          context: nginx
+          file: nginx/Dockerfile
+          push: ${{ github.event_name == 'release' }}
+          platforms: linux/amd64,linux/arm64
+          tags: craftcms/nginx:${{ matrix.php }}
+          build-args: |
+            PHP_VERSION=${{ matrix.php }}
+
+      - name: Build craftcms/nginx:${{ matrix.php }}-dev
+        uses: docker/build-push-action@v2
+        with:
+          context: nginx
+          file: nginx/Dockerfile
+          push: ${{ github.event_name == 'release' }}
+          platforms: linux/amd64,linux/arm64
+          tags: craftcms/nginx:${{ matrix.php }}-dev
+          build-args: |
+            PHP_VERSION=${{ matrix.php }}-dev
+            NGINX_CONF=dev.default.conf
