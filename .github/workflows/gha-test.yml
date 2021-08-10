@@ -14,6 +14,8 @@ jobs:
       matrix:
         php: ["8.0"]
     name: gha test ${{ matrix.php }} images
+    env:
+      PHP_IMAGE_TAG: timkelty/gha-test:${{ matrix.php }}
     steps:
       - name: Check out the repository
         uses: actions/checkout@v2
@@ -32,14 +34,14 @@ jobs:
           username: timkelty
           password: ${{ secrets.DOCKERHUB_TOKEN_TIM }}
 
-      - name: Build timkelty/gha-test:${{ matrix.php }}
+      - name: Build ${{ env.PHP_IMAGE_TAG }}
         uses: docker/build-push-action@v2
         with:
           context: gha-test
           file: gha-test/Dockerfile
           push: false
           load: true
-          tags: timkelty/gha-test:${{ matrix.php }}
+          tags: ${{ env.PHP_IMAGE_TAG }}
           build-args: |
             PROJECT_TYPE=fpm
             PHP_VERSION=${{ matrix.php }}
@@ -49,7 +51,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: timkelty/gha-test:${{ matrix.php }}
+          image: ${{ env.PHP_IMAGE_TAG }}
           args: --file=gha-test/Dockerfile
 
       - name: Push timkelty/gha-test:${{ matrix.php }}
@@ -59,7 +61,7 @@ jobs:
           file: gha-test/Dockerfile
           push: true
           platforms: ${{ env.BUILD_PLATFORMS }}
-          tags: timkelty/gha-test:${{ matrix.php }}
+          tags: ${{ env.PHP_IMAGE_TAG }}
           build-args: |
             PROJECT_TYPE=fpm
             PHP_VERSION=${{ matrix.php }}
