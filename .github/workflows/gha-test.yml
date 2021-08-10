@@ -13,12 +13,8 @@ jobs:
       fail-fast: ${{ github.event_name != 'release' }}
       matrix:
         php: ["8.0"]
+        type: ["gha-test-fpm", "gha-test-cli"]
     name: gha test ${{ matrix.php }} images
-    env:
-      PHP_IMAGE_TAG: timkelty/gha-test:${{ matrix.php }}
-      PHP_BUILD_ARGS: |
-        PROJECT_TYPE=fpm
-        PHP_VERSION=${{ matrix.php }}
     steps:
 
       - name: Check out the repository
@@ -38,29 +34,34 @@ jobs:
           username: timkelty
           password: ${{ secrets.DOCKERHUB_TOKEN_TIM }}
 
-      - name: Build ${{ env.PHP_IMAGE_TAG }}
+      - name: Build timkelty/${{ matrix.type }}:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
-          context: gha-test
-          file: gha-test/test.Dockerfile
+          context: ${{ matrix.type }}
+          file: ${{ matrix.type }}/test.Dockerfile
           push: false
           load: true
-          tags: ${{ env.PHP_IMAGE_TAG }}
-          build-args: ${{ env.PHP_BUILD_ARGS }}
+          tags: timkelty/${{ matrix.type }}:${{ matrix.php }}
+          build-args: |
+            PROJECT_TYPE=${{ matrix.type}}
+            PHP_VERSION=${{ matrix.php }}
+
 
       - name: Run Snyk to check Docker image for vulnerabilities
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ${{ env.PHP_IMAGE_TAG }}
+          image: timkelty/${{ matrix.type }}:${{ matrix.php }}
 
-      - name: Push timkelty/gha-test:${{ matrix.php }}
+      - name: Push timkelty/${{ matrix.type }}:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
-          context: gha-test
-          file: gha-test/test.Dockerfile
+          context: ${{ matrix.type }}
+          file: ${{ matrix.type }}/test.Dockerfile
           push: true
           platforms: ${{ env.BUILD_PLATFORMS }}
-          tags: ${{ env.PHP_IMAGE_TAG }}
-          build-args: ${{ env.PHP_BUILD_ARGS }}
+          tags: timkelty/${{ matrix.type }}:${{ matrix.php }}
+          build-args: |
+            PROJECT_TYPE=${{ matrix.type }}
+            PHP_VERSION=${{ matrix.php }}
