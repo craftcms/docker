@@ -14,6 +14,11 @@ jobs:
       matrix:
         php: ["8.0", "7.4"]
         type: ["gha-test-fpm", "gha-test-cli"]
+        include:
+          - type: gha-test-fpm
+            image_tag: timkelty/gha-test-php-fpm:${{ matrix.php }}
+          - type: gha-test-cli
+            image_tag: timkelty/gha-test-cli:${{ matrix.php }}
     name: gha test ${{ matrix.type }}:${{ matrix.php }}
     steps:
 
@@ -34,14 +39,14 @@ jobs:
           username: timkelty
           password: ${{ secrets.DOCKERHUB_TOKEN_TIM }}
 
-      - name: Build timkelty/${{ matrix.type }}:${{ matrix.php }}
+      - name: Build ${{ matrix.image_tag }}
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.type }}
           file: ${{ matrix.type }}/test.Dockerfile
           push: false
           load: true
-          tags: timkelty/${{ matrix.type }}:${{ matrix.php }}
+          tags: ${{ matrix.image_tag }}
           build-args: |
             PROJECT_TYPE=${{ matrix.type}}
             PHP_VERSION=${{ matrix.php }}
@@ -52,16 +57,16 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: timkelty/${{ matrix.type }}:${{ matrix.php }}
+          image: ${{ matrix.image_tag }}
 
-      - name: Push timkelty/${{ matrix.type }}:${{ matrix.php }}
+      - name: Push ${{ matrix.image_tag }}
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.type }}
           file: ${{ matrix.type }}/test.Dockerfile
           push: true
           platforms: ${{ env.BUILD_PLATFORMS }}
-          tags: timkelty/${{ matrix.type }}:${{ matrix.php }}
+          tags: ${{ matrix.image_tag }}
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
