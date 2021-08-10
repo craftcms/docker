@@ -8,7 +8,6 @@ env:
 
 jobs:
   build-base-images:
-    needs: setup
     runs-on: ubuntu-latest
     strategy:
       fail-fast: ${{ github.event_name != 'release' }}
