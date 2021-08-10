@@ -33,8 +33,8 @@ jobs:
       - name: Build timkelty/gha-test:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.php }}
-          file: ${{ matrix.php }}/Dockerfile
+          context: gha-test
+          file: gha-test/Dockerfile
           push: false
           platforms: linux/amd64,linux/arm64
           tags: timkelty/gha-test:${{ matrix.php }}
@@ -48,13 +48,13 @@ jobs:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: timkelty/gha-test:${{ matrix.php }}
-          args: --file=${{ matrix.php }}/Dockerfile
+          args: --file=gha-test/Dockerfile
 
       - name: Push timkelty/gha-test:${{ matrix.php }}
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.php }}
-          file: ${{ matrix.php }}/Dockerfile
+          context: gha-test
+          file: gha-test/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: timkelty/gha-test:${{ matrix.php }}
