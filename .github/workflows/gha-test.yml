@@ -35,6 +35,26 @@ jobs:
         with:
           context: ${{ matrix.php }}
           file: ${{ matrix.php }}/Dockerfile
+          push: false
+          platforms: linux/amd64,linux/arm64
+          tags: timkelty/gha-test:${{ matrix.php }}
+          build-args: |
+            PROJECT_TYPE=fpm
+            PHP_VERSION=${{ matrix.php }}
+
+      - name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: timkelty/gha-test:${{ matrix.php }}
+          args: --file=${{ matrix.php }}/Dockerfile
+
+      - name: Push timkelty/gha-test:${{ matrix.php }}
+        uses: docker/build-push-action@v2
+        with:
+          context: ${{ matrix.php }}
+          file: ${{ matrix.php }}/Dockerfile
           push: true
           platforms: linux/amd64,linux/arm64
           tags: timkelty/gha-test:${{ matrix.php }}
