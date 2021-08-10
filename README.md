@@ -147,6 +147,8 @@ services:
   console:
     image: craftcms/cli:8.0-dev
     env_file: .env
+    environment:
+      XDEBUG_CONFIG: client_host=host.docker.internal
     depends_on:
       mysql:
         condition: service_healthy
@@ -161,6 +163,8 @@ services:
     ports:
       - 8080:8080
     env_file: .env
+    environment:
+      XDEBUG_CONFIG: client_host=host.docker.internal
     depends_on:
       mysql:
         condition: service_healthy
@@ -194,6 +198,13 @@ services:
 volumes:
   db_data:
 ```
+
+## Using Xdebug
+
+Xdebug is install on the `-dev` image variants, but you will still need to set `xdebug.client_host`.
+We do not do this in our images, as it is platform-specific. However, if you are on Docker Desktop for Mac or Windows, you can use `host.docker.internal`.
+
+This can be done via environment variable: `XDEBUG_CONFIG=client_host=host.docker.internal`. [See example](#running-locally-with-docker-compose)
 
 ## Installing Extensions
 

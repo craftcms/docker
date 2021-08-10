@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.3.1 - 2021-08-10
+
+### Changed
+
+- Removed reference to `host.docker.internal`, as it is not cross-platform [#34](https://github.com/craftcms/docker/issues/34)
+
 ## 1.3.0 - 2021-08-10
 
 ### Added
