@@ -22,10 +22,10 @@ jobs:
           - type: gha-test-cli
             image_name: timkelty/gha-test-cli
     name: gha test ${{ env.image_tag }}
-    env:
-      image_tag: ${{ matrix.image_name }}:${{ matrix.php }}${{ matrix.variant }}
     steps:
-
+      - name: Set the value
+        run: |
+          echo "image_tag=${{ matrix.image_name }}:${{ matrix.php }}${{ matrix.variant }}" >> $GITHUB_ENV
       - name: Check out the repository
         uses: actions/checkout@v2
 
