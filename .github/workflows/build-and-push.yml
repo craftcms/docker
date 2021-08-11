@@ -1,4 +1,4 @@
-name: Build and (maybe) Push Docker Images
+name: Build and (maybe) push Docker images
 
 on:
   push:
@@ -113,7 +113,7 @@ jobs:
             PHP_VERSION=${{ matrix.php }}
 
   build-nginx-images:
-      name: Build nginx images
+      name: Build NGINX images
       needs: build-php-images
       runs-on: ubuntu-latest
       strategy:
