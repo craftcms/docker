@@ -12,21 +12,18 @@ jobs:
       fail-fast: ${{ github.event_name != 'release' }}
       matrix:
         php: ["8.1-rc", "8.0", "7.4", "7.3"]
-        type: ["fpm", "cli"]
+        type: ["php-fpm", "cli"]
         include:
-          - type: fpm
-            type_full: php-fpm
-            image_name: timkelty/php-fpm
+          - type: php-fpm
+            type_short: fpm
 
           - type: cli
-            type_full: cli
-            image_name: timkelty/cli
 
     name: Build & Push Image
     steps:
       - name: Set IMAGE_TAG env
         run: |
-          echo "IMAGE_TAG=${{ matrix.image_name }}:${{ matrix.php }}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=timkelty/${{ matrix.type_short || matrix.type }}:${{ matrix.php }}" >> $GITHUB_ENV
           echo "CONTEXT=${{ matrix.context || matrix.php }}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
@@ -47,7 +44,7 @@ jobs:
         with:
           install: true
 
-      - name: Build image
+      - name: Build production image
         uses: docker/build-push-action@v2
         with:
           context: ${{ env.CONTEXT }}
@@ -65,7 +62,7 @@ jobs:
         with:
           image: ${{ env.IMAGE_TAG }}
 
-      - name: Build & push image
+      - name: Build & push production image
         uses: docker/build-push-action@v2
         # if: github.event_name == 'release'
         with:
@@ -74,17 +71,6 @@ jobs:
           tags: ${{ env.IMAGE_TAG }}
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
-            PHP_VERSION=${{ matrix.php }}
-
-      - name: Build nginx image
-        if: matrix.type == 'fpm'
-        uses: docker/build-push-action@v2
-        with:
-          context: nginx
-          push: false
-          load: true
-          tags: timkelty/nginx:${{ matrix.php }}
-          build-args: |
             PHP_VERSION=${{ matrix.php }}
 
       - name: Build dev image
