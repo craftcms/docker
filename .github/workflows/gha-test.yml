@@ -14,13 +14,16 @@ jobs:
       matrix:
         php: ["8.0", "7.4"]
         type: ["gha-test-fpm", "gha-test-cli"]
+        variant: ["", "-dev"]
         include:
           - type: gha-test-fpm
-            image_tag: timkelty/gha-test-php-fpm:${{ matrix.php }}
+            image_name: timkelty/gha-test-php-fpm
 
           - type: gha-test-cli
-            image_tag: timkelty/gha-test-cli:${{ matrix.php }}
-    name: gha test ${{ matrix.image_tag }}
+            image_name: timkelty/gha-test-cli
+    env:
+      image_tag: ${{ image_name }}:${{ matrix.php }}${{ matrix.variant }}
+    name: gha test ${{ env.image_tag }}
     steps:
 
       - name: Check out the repository
@@ -40,16 +43,16 @@ jobs:
           username: timkelty
           password: ${{ secrets.DOCKERHUB_TOKEN_TIM }}
 
-      - name: Build ${{ matrix.image_tag }}
+      - name: Build ${{ env.image_tag }}
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.type }}
           file: ${{ matrix.type }}/test.Dockerfile
           push: false
           load: true
-          tags: ${{ matrix.image_tag }}
+          tags: ${{ env.image_tag }}
           build-args: |
-            PROJECT_TYPE=${{ matrix.type}}
+            PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
 
 
@@ -58,16 +61,16 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ${{ matrix.image_tag }}
+          image: ${{ env.image_tag }}
 
-      - name: Push ${{ matrix.image_tag }}
+      - name: Push ${{ env.image_tag }}
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.type }}
           file: ${{ matrix.type }}/test.Dockerfile
           push: true
           platforms: ${{ env.BUILD_PLATFORMS }}
-          tags: ${{ matrix.image_tag }}
+          tags: ${{ env.image_tag }}
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
