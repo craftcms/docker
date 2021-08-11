@@ -96,5 +96,5 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_TAG }}-dev
           build-args: |
-            PROJECT_TYPE=${{ matrix.project_type }}
+            PROJECT_TYPE=${{ matrix.type_full }}
             PHP_VERSION=${{ matrix.php }}
