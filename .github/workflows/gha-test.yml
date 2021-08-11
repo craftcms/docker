@@ -2,30 +2,48 @@ name: Build and (maybe) Push Docker Images
 on:
   push:
     branches:
-      - gha-test
+      - develop
+  release:
+    types: [published, created, edited]
 env:
   BUILD_PLATFORMS: linux/amd64, linux/arm64
-
 jobs:
   build-base-images:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: ${{ github.event_name != 'release' }}
       matrix:
-        php: ["8.0", "7.4"]
-        type: ["gha-test-fpm", "gha-test-cli"]
-        variant: ["", "-dev"]
+        php: ["8.1-rc", "8.0", "7.4", "7.3"]
+        type: ["fpm", "cli", "nginx"]
+        variant: [false, "-dev"]
         include:
-          - type: gha-test-fpm
-            image_name: timkelty/gha-test-php-fpm
+          - dockerfile: Dockerfile
 
-          - type: gha-test-cli
-            image_name: timkelty/gha-test-cli
-    name: gha test
+          - type: fpm
+            image_name: craftcms/php-fpm
+
+          - type: cli
+            image_name: craftcms/cli
+
+          - type: nginx
+            context: nginx
+            image_name: craftcms/nginx
+
+          - variant: -dev
+            dockerfile: dev.Dockerfile
+
+          - variant: -dev
+            type: nginx
+            dockerfile: Dockerfile
+            nginx_conf: dev.default.conf
+
+    name: Build & Push Image
     steps:
-      - name: Set the value
+      - name: Set IMAGE_TAG env
         run: |
-          echo "image_tag=${{ matrix.image_name }}:${{ matrix.php }}${{ matrix.variant }}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${{ matrix.image_name }}:${{ matrix.php }}${{ matrix.variant }}" >> $GITHUB_ENV
+          echo "CONTEXT=${{ matrix.context || matrix.php }}" >> $GITHUB_ENV
+
       - name: Check out the repository
         uses: actions/checkout@v2
 
@@ -37,40 +55,42 @@ jobs:
         with:
           install: true
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v1
-        with:
-          username: timkelty
-          password: ${{ secrets.DOCKERHUB_TOKEN_TIM }}
-
-      - name: Build ${{ env.image_tag }}
+      - name: Build image
         uses: docker/build-push-action@v2
         with:
-          context: ${{ matrix.type }}
-          file: ${{ matrix.type }}/test.Dockerfile
+          context: ${{ env.CONTEXT }}
+          file: ${{ env.CONTEXT }}/${{ matrix.dockerfile }}
           push: false
           load: true
-          tags: ${{ env.image_tag }}
+          tags: ${{ env.IMAGE_TAG }}
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
+            NGINX_CONF=${{ matrix.nginx_conf }}
 
-
-      - name: Run Snyk to check Docker image for vulnerabilities
+      - name: Snyk test
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
-          image: ${{ env.image_tag }}
+          image: ${{ env.IMAGE_TAG }}
 
-      - name: Push ${{ env.image_tag }}
-        uses: docker/build-push-action@v2
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        if: github.event_name == 'release'
         with:
-          context: ${{ matrix.type }}
-          file: ${{ matrix.type }}/test.Dockerfile
-          push: true
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build & push image
+        uses: docker/build-push-action@v2
+        if: github.event_name == 'release'
+        with:
+          context: ${{ env.CONTEXT }}
+          file: ${{ env.CONTEXT }}/${{ matrix.dockerfile }}
           platforms: ${{ env.BUILD_PLATFORMS }}
-          tags: ${{ env.image_tag }}
+          tags: ${{ env.IMAGE_TAG }}
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
+            NGINX_CONF=${{ matrix.nginx_conf }}
