@@ -13,10 +13,7 @@ jobs:
       matrix:
         php: ["8.1-rc", "8.0", "7.4", "7.3"]
         type: ["fpm", "cli", "nginx"]
-        variant: [false, "-dev"]
         include:
-          - dockerfile: Dockerfile
-
           - type: fpm
             image_name: timkelty/php-fpm
 
@@ -27,19 +24,11 @@ jobs:
             context: nginx
             image_name: timkelty/nginx
 
-          - variant: -dev
-            dockerfile: dev.Dockerfile
-
-          - variant: -dev
-            type: nginx
-            dockerfile: Dockerfile
-            nginx_conf: dev.default.conf
-
     name: Build & Push Image
     steps:
       - name: Set IMAGE_TAG env
         run: |
-          echo "IMAGE_TAG=${{ matrix.image_name }}:${{ matrix.php }}${{ matrix.variant }}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=${{ matrix.image_name }}:${{ matrix.php }}" >> $GITHUB_ENV
           echo "CONTEXT=${{ matrix.context || matrix.php }}" >> $GITHUB_ENV
 
       - name: Check out the repository
@@ -57,7 +46,6 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: ${{ env.CONTEXT }}
-          file: ${{ env.CONTEXT }}/${{ matrix.dockerfile }}
           push: false
           load: true
           tags: ${{ env.IMAGE_TAG }}
@@ -85,7 +73,6 @@ jobs:
         # if: github.event_name == 'release'
         with:
           context: ${{ env.CONTEXT }}
-          file: ${{ env.CONTEXT }}/${{ matrix.dockerfile }}
           platforms: ${{ env.BUILD_PLATFORMS }}
           tags: ${{ env.IMAGE_TAG }}
           build-args: |
