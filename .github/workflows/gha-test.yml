@@ -75,7 +75,7 @@ jobs:
             PHP_VERSION=${{ matrix.php }}
 
       - name: Build nginx image
-        if: matrix.type == "fpm"
+        if: matrix.type == 'fpm'
         uses: docker/build-push-action@v2
         with:
           context: nginx
