@@ -21,9 +21,9 @@ jobs:
 
           - type: gha-test-cli
             image_name: timkelty/gha-test-cli
+    name: gha test ${{ env.image_tag }}
     env:
       image_tag: ${{ matrix.image_name }}:${{ matrix.php }}${{ matrix.variant }}
-    name: gha test ${{ env.image_tag }}
     steps:
 
       - name: Check out the repository
