@@ -21,7 +21,7 @@ jobs:
 
           - type: gha-test-cli
             image_name: timkelty/gha-test-cli
-    name: gha test ${{ env.image_tag }}
+    name: gha test
     steps:
       - name: Set the value
         run: |
