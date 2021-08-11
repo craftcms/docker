@@ -15,9 +15,11 @@ jobs:
         type: ["fpm", "cli"]
         include:
           - type: fpm
+            type_full: php-fpm
             image_name: timkelty/php-fpm
 
           - type: cli
+            type_full: cli
             image_name: timkelty/cli
 
     name: Build & Push Image
@@ -94,5 +96,5 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_TAG }}-dev
           build-args: |
-            PROJECT_TYPE=${{ matrix.type }}
+            PROJECT_TYPE=${{ matrix.project_type }}
             PHP_VERSION=${{ matrix.php }}
