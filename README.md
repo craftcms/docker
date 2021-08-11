@@ -176,7 +176,7 @@ services:
   postgres:
     image: postgres:13-alpine
     ports:
-      - 3306:3306
+      - 5432:5432
     environment:
       POSTGRES_DB: dev_craftcms
       POSTGRES_USER: craftcms
@@ -184,7 +184,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD", "pg_isready"]
       interval: 5s
       retries: 3
 
