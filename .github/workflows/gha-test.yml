@@ -85,3 +85,15 @@ jobs:
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
+
+      - name: Build nginx image
+        if: matrix.type == 'php-fpm'
+        uses: docker/build-push-action@v2
+        with:
+          context: nginx
+          file: nginx/Dockerfile
+          push: false
+          load: true
+          tags: timkelty/nginx:${{ matrix.php }}
+          build-args: |
+            PHP_VERSION=${{ matrix.php }}
