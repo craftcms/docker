@@ -150,7 +150,7 @@ services:
     environment:
       XDEBUG_CONFIG: client_host=host.docker.internal
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
@@ -166,7 +166,7 @@ services:
     environment:
       XDEBUG_CONFIG: client_host=host.docker.internal
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
       redis:
         condition: service_healthy
