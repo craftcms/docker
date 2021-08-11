@@ -18,12 +18,13 @@ jobs:
             type_short: fpm
 
           - type: cli
+            type_short: cli
 
-    name: Build & Push Image
+    name: Build base images
     steps:
       - name: Set IMAGE_TAG env
         run: |
-          echo "IMAGE_TAG=timkelty/${{ matrix.type_short || matrix.type }}:${{ matrix.php }}" >> $GITHUB_ENV
+          echo "IMAGE_TAG=timkelty/${{ matrix.type_short }}:${{ matrix.php }}" >> $GITHUB_ENV
           echo "CONTEXT=${{ matrix.context || matrix.php }}" >> $GITHUB_ENV
 
       - name: Login to Docker Hub
@@ -82,5 +83,5 @@ jobs:
           load: true
           tags: ${{ env.IMAGE_TAG }}-dev
           build-args: |
-            PROJECT_TYPE=${{ matrix.type_full }}
+            PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
