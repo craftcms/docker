@@ -78,25 +78,46 @@ RUN set -ex \
     redis \
     && docker-php-ext-enable \
     imagick \
-    redis \
-    && RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
+    redis
+
+# https://github.com/craftcms/docker/issues/16
+COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
+
+# https://github.com/docker-library/php/issues/1121
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
+
+# Mozjpeg
+WORKDIR /tmp
+ARG MOZJPEG_VERSION=3.3.1
+ADD https://github.com/mozilla/mozjpeg/archive/v${MOZJPEG_VERSION}.tar.gz ./
+RUN set -ex \
+    && apk upgrade --no-cache \
+    && apk add --no-cache --virtual .build-deps \
+    autoconf \
+    automake \
+    build-base \
+    libtool \
+    nasm \
+    pkgconf \
+    tar \
+    && tar -xzf v${MOZJPEG_VERSION}.tar.gz \
+    && cd ./mozjpeg-${MOZJPEG_VERSION} && \
+    autoreconf -fiv\
+    && ./configure --with-jpeg8 \
+    && make \
+    && make install
+
+RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
+RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
+
+RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
     | sort -u \
     | xargs -r apk info --installed \
     | sort -u)" \
     && apk add --no-cache --virtual .runtime-deps $RUNTIME_DEPS \
-    && apk del --no-network .build-deps
-
-# https://github.com/craftcms/docker/issues/16
-COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
-
-# mozjpeg is not available in alpine
-COPY --from=bugoman/mozjpeg /opt/mozjpeg /opt/mozjpeg
-RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
-RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
-
-# https://github.com/docker-library/php/issues/1121
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
+    && apk del --no-network .build-deps \
+    && rm -rf /tmp/*
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
