@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.3.2 - 2021-08-13
+
+### Changed
+
+- Build mozjpeg instead of using dependency.
+
 ## 1.3.1 - 2021-08-10
 
 ### Changed
