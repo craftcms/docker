@@ -1,5 +1,11 @@
 # Release Notes for Craft CMS Docker Images
 
+## 1.3.3 - 2021-08-13
+
+### Fixed
+
+- Fix broken runtime dependencies (thanks @kylecotter)
+
 ## 1.3.2 - 2021-08-13
 
 ### Changed

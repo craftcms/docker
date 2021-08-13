@@ -36,10 +36,22 @@ ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
+# MozJPEG
+ENV MOZJPEG_VERSION="3.3.1"
+ENV MOZJPEG_BUILD_DEPS \
+    autoconf \
+    automake \
+    build-base \
+    libtool \
+    nasm \
+    pkgconf \
+    tar
+
 RUN set -ex \
     && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
+    $MOZJPEG_BUILD_DEPS \
     freetype-dev \
     icu-dev \
     imagemagick-dev \
@@ -86,23 +98,13 @@ COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_li
 # https://github.com/docker-library/php/issues/1121
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
-# Mozjpeg
+# MozJPEG
 WORKDIR /tmp
-ARG MOZJPEG_VERSION=3.3.1
 ADD https://github.com/mozilla/mozjpeg/archive/v${MOZJPEG_VERSION}.tar.gz ./
 RUN set -ex \
-    && apk upgrade --no-cache \
-    && apk add --no-cache --virtual .build-deps \
-    autoconf \
-    automake \
-    build-base \
-    libtool \
-    nasm \
-    pkgconf \
-    tar \
     && tar -xzf v${MOZJPEG_VERSION}.tar.gz \
-    && cd ./mozjpeg-${MOZJPEG_VERSION} && \
-    autoreconf -fiv\
+    && cd ./mozjpeg-${MOZJPEG_VERSION} \
+    && autoreconf -fiv \
     && ./configure --with-jpeg8 \
     && make \
     && make install
@@ -110,6 +112,7 @@ RUN set -ex \
 RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
 RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
+# Cleanup
 RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
     | sort -u \
