@@ -225,22 +225,22 @@ jobs:
             build-args: |
               PHP_VERSION=${{ env.BASE_DEV_IMAGE_TAG }}
 
-      - name: Snyk monitor production image
-        uses: snyk/actions/docker@master
-        if: github.event_name == 'release'
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          image: ${{ env.PROD_IMAGE_REF }}
-          args: --file=${{ env.PROD_DOCKERFILE }}
+        - name: Snyk monitor production image
+          uses: snyk/actions/docker@master
+          if: github.event_name == 'release'
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          with:
+            command: monitor
+            image: ${{ env.PROD_IMAGE_REF }}
+            args: --file=${{ env.PROD_DOCKERFILE }}
 
-      - name: Snyk monitor development image
-        if: github.event_name == 'release'
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          image: ${{ env.DEV_IMAGE_REF }}
-          args: --file=${{ env.DEV_DOCKERFILE }}
+        - name: Snyk monitor development image
+          if: github.event_name == 'release'
+          uses: snyk/actions/docker@master
+          env:
+            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          with:
+            command: monitor
+            image: ${{ env.DEV_IMAGE_REF }}
+            args: --file=${{ env.DEV_DOCKERFILE }}
