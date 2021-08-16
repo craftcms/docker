@@ -10,6 +10,7 @@ USER root
 COPY craft-cms-xdebug.ini /usr/local/etc/php/conf.d/
 
 RUN set -ex \
+    && apk upgrade --no-cache \
     && apk --no-cache add --virtual .build-deps $PHPIZE_DEPS \
     && apk --no-cache add \
     git \
