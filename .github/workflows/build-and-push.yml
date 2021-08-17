@@ -58,6 +58,7 @@ jobs:
       - name: Snyk test production image
         uses: snyk/actions/docker@master
         env:
+          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ env.PROD_IMAGE_REF }}
@@ -78,6 +79,7 @@ jobs:
       - name: Snyk test development image
         uses: snyk/actions/docker@master
         env:
+          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           image: ${{ env.DEV_IMAGE_REF }}
@@ -119,6 +121,7 @@ jobs:
         uses: snyk/actions/docker@master
         if: github.event_name == 'release'
         env:
+          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
@@ -129,6 +132,7 @@ jobs:
         if: github.event_name == 'release'
         uses: snyk/actions/docker@master
         env:
+          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         with:
           command: monitor
@@ -179,6 +183,7 @@ jobs:
         - name: Snyk test production image
           uses: snyk/actions/docker@master
           env:
+            SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           with:
             image: ${{ env.PROD_IMAGE_REF }}
@@ -229,6 +234,7 @@ jobs:
           uses: snyk/actions/docker@master
           if: github.event_name == 'release'
           env:
+            SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           with:
             command: monitor
@@ -239,6 +245,7 @@ jobs:
           if: github.event_name == 'release'
           uses: snyk/actions/docker@master
           env:
+            SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
             SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           with:
             command: monitor
