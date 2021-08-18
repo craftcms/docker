@@ -114,7 +114,8 @@ RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
 RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
 # Cleanup
-RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
+RUN set -ex \
+    && RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
     | sort -u \
     | xargs -r apk info --installed \
