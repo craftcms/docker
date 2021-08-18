@@ -130,6 +130,15 @@ COPY blackfire-install.sh /tmp/blackfire-install.sh
 # run the installation script
 RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
 
+# run server check
+RUN set -ex \
+    && export CRAFT_STRICT_SERVER_CHECK=1 \
+    && apk add --no-cache --virtual .server-check-deps \
+    bash \
+    curl \
+    && curl -Lsf https://raw.githubusercontent.com/craftcms/server-check/HEAD/check.sh | bash \
+    && apk del --no-network .server-check-deps
+
 # make the directories and set permissions
 RUN mkdir -p /app
 
