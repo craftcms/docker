@@ -108,10 +108,9 @@ RUN set -ex \
     && autoreconf -fiv \
     && ./configure --with-jpeg8 \
     && make \
-    && make install
-
-RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
-RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
+    && make install \
+    && ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran \
+    && ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
 # Cleanup
 RUN set -ex \
