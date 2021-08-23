@@ -99,7 +99,7 @@ COPY --chown=www-data:www-data . .
 
 ### Database Tools
 
-This example uses the `craftcms/nginx` image and installs the database tools to enable backups from the Craft CMS control panel:
+This example uses the `nginx` image and installs the database tools to enable backups from the Craft CMS control panel:
 
 ```dockerfile
 # composer dependencies
