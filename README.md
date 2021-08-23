@@ -1,24 +1,20 @@
 # Craft Docker Images
 
-These images are provided as a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and pre-configured to meet Craft’s requirements in production and development environments.
+These images are a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and pre-configured to meet Craft’s requirements for production and development environments.
 
 ## Images
 
-There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:8.0`).
+There are three main “types” of images: [`php-fpm`](#php-fpm), [`nginx`](#nginx), and [`cli`](#cli). These are production-ready, and each allows the developer to select a PHP version (e.g. `craftcms/nginx:8.0`). Each one also a `-dev` variant (e.g. `craftcms/php-fpm:8.0-dev`) for local development with Xdebug and database tools for managing backups.
 
-Each image and PHP version also provides a `-dev` variant which has Xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:8.0-dev`), as well as database tools for creating and restoring backups. Images that do not include `-dev` are considered production.
+> 💡 Database tools are only included in `-dev` image variants. If you’d like to create database backups from the Craft CMS control panel using the production images, you’ll need to [install the database tools](#database-tools) yourself.
 
-> Note: you are not required to use `-dev` images for local development, they are provided with Xdebug and to make debugging easier.
-
-To keep the production images lean and secure, database tools are NOT included by default (they are included in the `-dev` variants). If you want to create database backups from the Craft control panel, you will need to [install these yourself](#database-tools).
-
-Supported PHP versions are aligned with [PHP's official support](https://www.php.net/supported-versions.php), meaning that once a PHP version is EOL, we will no longer build new images for that version.
+Our Docker image PHP versions align with [PHP’s official support](https://www.php.net/supported-versions.php), meaning that once a PHP version is EOL, we will no longer build new images for that version.
 
 ### php-fpm
 
 [![craftcms/php-fpm](https://img.shields.io/docker/pulls/craftcms/php-fpm.svg)](https://hub.docker.com/r/craftcms/php-fpm)
 
-The `php-fpm` image is provided as the base image (and is also used for the `nginx` image) and requires you "bring your own server".
+The `php-fpm` image is a base image and does not include a web server.
 
 | Image                         | Use | Environment   | Status |
 | ----------------------------- | --- | ------------- | ------ |
@@ -41,7 +37,7 @@ The `php-fpm` image is provided as the base image (and is also used for the `ngi
 
 [![craftcms/nginx](https://img.shields.io/docker/pulls/craftcms/nginx.svg)](https://hub.docker.com/r/craftcms/nginx)
 
-The `nginx` image is used for a typical installation and includes an Nginx server configured for Craft CMS and php-fpm.
+The `nginx` image builds upon the `php-fpm` image to provide an Nginx server that’s ready to run a typical Craft CMS installation with php-fpm.
 
 | Image                       | Use | Environment   | Status |
 | --------------------------- | --- | ------------- | ------ |
@@ -64,7 +60,7 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 
 [![craftcms/cli](https://img.shields.io/docker/pulls/craftcms/cli.svg)](https://hub.docker.com/r/craftcms/cli)
 
-The image type `cli` which is used to run queues, migrations, etc. and the image does not expose ports for HTTP/S or PHP-FPM.
+The `cli` image is for terminal-only Craft interaction like to running queues, migrations, etc. The image does not expose ports for HTTP/S or php-fpm.
 
 | Image                     | Use | Environment   | Status |
 | ------------------------- | --- | ------------- | ------ |
@@ -85,8 +81,6 @@ The image type `cli` which is used to run queues, migrations, etc. and the image
 
 ## Usage
 
-There are two main types of images: `php-fpm` for handling the web application, and `cli` for running queues and other Craft CLI commands. Additionally, we provide an `nginx` image, which combines `php-fpm` and `nginx` into a single image for simplicity and ease of development.
-
 This example uses a Docker [multi-stage build](https://docs.docker.com/develop/develop-images/multistage-build/) to install composer dependencies inside a separate layer before copying them into the final image.
 
 ```dockerfile
@@ -103,9 +97,9 @@ COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
 COPY --chown=www-data:www-data . .
 ```
 
-### Database tools
+### Database Tools
 
-This example uses the `craftcms/nginx` repository and installs the database tools to enable backups from the Craft CMS control panel. Note: These will be included automatically if using the `-dev` image variants.
+This example uses the `craftcms/nginx` image and installs the database tools to enable backups from the Craft CMS control panel:
 
 ```dockerfile
 # composer dependencies
@@ -128,13 +122,13 @@ COPY --chown=www-data:www-data . .
 
 ## Permissions
 
-The image is designed to be run by a `www-data` user that owns of the image’s `/app` directory. Running as non-root is considered a Docker best practice, especially when shipping container images to production.
+The images are designed to be run by a `www-data` user that owns of the image’s `/app` directory. Running as non-root is considered a Docker best practice, especially when shipping container images to production.
 
-> Note: You can use the `USER root` directive to switch back to `root` to install any additional packages you need.
+> 💡 You can use the `USER root` directive to switch to `root` and install any packages you need.
 
 ## Running Locally with Docker Compose
 
-We recommend running Docker locally if you’re shipping your project to a Docker-based envrionment such as Amazon Web Services Elastic Container Services (ECS). The following Docker Compose file will setup your local environment with the following:
+We recommend running Docker locally if you’re shipping your project to a Docker-based environment like Amazon Web Services Elastic Container Service (ECS). The following Docker Compose file will set up your local environment with the following:
 
 1. `web` service that will handle running PHP and Nginx
 2. `postgres` service that will store your content
@@ -201,14 +195,16 @@ volumes:
 
 ## Using Xdebug
 
-Xdebug is install on the `-dev` image variants, but you will still need to set `xdebug.client_host`.
-We do not do this in our images, as it is platform-specific. However, if you are on Docker Desktop for Mac or Windows, you can use `host.docker.internal`.
+Xdebug is included with the `-dev` image variants, but you still need to set `xdebug.client_host`.
+We don’t do this in our images because it’s platform-specific. If you’re using Docker Desktop for macOS or Windows, you can use `host.docker.internal`.
 
 This can be done via environment variable: `XDEBUG_CONFIG=client_host=host.docker.internal`. [See example](#running-locally-with-docker-compose)
 
 ## Installing Extensions
 
-This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 8.0. Note that it switches back to `www-data` after installation:
+This image is based on the [official Docker PHP-FPM image](https://hub.docker.com/_/php) (Alpine Linux), where you can use included tools to install PHP extensions as the `root` user.
+
+This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 8.0. Note that it switches back to `www-data` after installation:
 
 ```dockerfile
 FROM craftcms/php-fpm:8.0
