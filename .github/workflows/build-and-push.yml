@@ -1,6 +1,7 @@
 name: Build and (maybe) push Docker images
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - develop
