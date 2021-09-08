@@ -117,28 +117,6 @@ jobs:
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
 
-      - name: Snyk monitor production image
-        uses: snyk/actions/docker@master
-        if: github.event_name == 'release'
-        env:
-          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          image: ${{ env.PROD_IMAGE_REF }}
-          args: --file=${{ env.PROD_DOCKERFILE }}
-
-      - name: Snyk monitor development image
-        if: github.event_name == 'release'
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          command: monitor
-          image: ${{ env.DEV_IMAGE_REF }}
-          args: --file=${{ env.DEV_DOCKERFILE }}
-
   build-nginx-images:
       name: Build NGINX images
       needs: build-php-images
@@ -229,25 +207,3 @@ jobs:
             tags: ${{ env.DEV_IMAGE_REF }}
             build-args: |
               PHP_VERSION=${{ env.BASE_DEV_IMAGE_TAG }}
-
-        - name: Snyk monitor production image
-          uses: snyk/actions/docker@master
-          if: github.event_name == 'release'
-          env:
-            SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
-            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          with:
-            command: monitor
-            image: ${{ env.PROD_IMAGE_REF }}
-            args: --file=${{ env.PROD_DOCKERFILE }}
-
-        - name: Snyk monitor development image
-          if: github.event_name == 'release'
-          uses: snyk/actions/docker@master
-          env:
-            SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
-            SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          with:
-            command: monitor
-            image: ${{ env.DEV_IMAGE_REF }}
-            args: --file=${{ env.DEV_DOCKERFILE }}

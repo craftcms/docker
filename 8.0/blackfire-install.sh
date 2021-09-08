@@ -13,7 +13,7 @@ case $system_arch in
     ;;
 esac
 
-readonly local BLACKFIRE_URL=https://blackfire.io/api/v1/releases/probe/php/linux/$arch_sys/$version
+readonly local BLACKFIRE_URL=https://blackfire.io/api/v1/releases/probe/php/alpine/$arch_sys/$version
 readonly local ext_dir=$(find /usr/local/lib/php/extensions/ -name "no-debug-non-zts-*")
 readonly local so_path="${ext_dir}/blackfire.so"
 readonly local ext_ini_string="extension=${so_path}"
