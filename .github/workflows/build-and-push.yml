@@ -208,3 +208,4 @@ jobs:
             tags: ${{ env.DEV_IMAGE_REF }}
             build-args: |
               PHP_VERSION=${{ env.BASE_DEV_IMAGE_TAG }}
+              NGINX_CONFIG=${{ matrix.dev_nginx_conf }}
