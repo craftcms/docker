@@ -184,7 +184,7 @@ services:
     volumes:
       - db_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "pg_isready"]
+      test: ["CMD", "pg_isready", "-U", "craftcms", "-d", "dev_craftcms"]
       interval: 5s
       retries: 3
 
