@@ -20,22 +20,22 @@ Supported PHP versions are aligned with [PHP's official support](https://www.php
 
 The `php-fpm` image is provided as the base image (and is also used for the `nginx` image) and requires you "bring your own server".
 
-| Image                         | Use | Environment   | Status |
-| ----------------------------- | --- | ------------- | ------ |
-| `craftcms/php-fpm:8.1-rc`     | web | `production`  | RC     |
-| `craftcms/php-fpm:8.1-rc-dev` | web | `development` | RC     |
-| `craftcms/php-fpm:8.0`        | web | `production`  |        |
-| `craftcms/php-fpm:8.0-dev`    | web | `development` |        |
-| `craftcms/php-fpm:7.4`        | web | `production`  |        |
-| `craftcms/php-fpm:7.4-dev`    | web | `development` |        |
-| `craftcms/php-fpm:7.3`        | web | `production`  |        |
-| `craftcms/php-fpm:7.3-dev`    | web | `development` |        |
-| `craftcms/php-fpm:7.2`        | web | `production`  | EOL    |
-| `craftcms/php-fpm:7.2-dev`    | web | `development` | EOL    |
-| `craftcms/php-fpm:7.1`        | web | `production`  | EOL    |
-| `craftcms/php-fpm:7.1-dev`    | web | `development` | EOL    |
-| `craftcms/php-fpm:7.0`        | web | `production`  | EOL    |
-| `craftcms/php-fpm:7.0-dev`    | web | `development` | EOL    |
+| Image                      | Use | Environment   | Status |
+| -------------------------- | --- | ------------- | ------ |
+| `craftcms/php-fpm:8.1`     | web | `production`  | RC     |
+| `craftcms/php-fpm:8.1-dev` | web | `development` | RC     |
+| `craftcms/php-fpm:8.0`     | web | `production`  |        |
+| `craftcms/php-fpm:8.0-dev` | web | `development` |        |
+| `craftcms/php-fpm:7.4`     | web | `production`  |        |
+| `craftcms/php-fpm:7.4-dev` | web | `development` |        |
+| `craftcms/php-fpm:7.3`     | web | `production`  |        |
+| `craftcms/php-fpm:7.3-dev` | web | `development` |        |
+| `craftcms/php-fpm:7.2`     | web | `production`  | EOL    |
+| `craftcms/php-fpm:7.2-dev` | web | `development` | EOL    |
+| `craftcms/php-fpm:7.1`     | web | `production`  | EOL    |
+| `craftcms/php-fpm:7.1-dev` | web | `development` | EOL    |
+| `craftcms/php-fpm:7.0`     | web | `production`  | EOL    |
+| `craftcms/php-fpm:7.0-dev` | web | `development` | EOL    |
 
 ### Nginx
 
@@ -43,22 +43,22 @@ The `php-fpm` image is provided as the base image (and is also used for the `ngi
 
 The `nginx` image is used for a typical installation and includes an Nginx server configured for Craft CMS and php-fpm.
 
-| Image                       | Use | Environment   | Status |
-| --------------------------- | --- | ------------- | ------ |
-| `craftcms/nginx:8.1-rc`     | web | `production`  | RC     |
-| `craftcms/nginx:8.1-rc-dev` | web | `development` | RC     |
-| `craftcms/nginx:8.0`        | web | `production`  |        |
-| `craftcms/nginx:8.0-dev`    | web | `development` |        |
-| `craftcms/nginx:7.4`        | web | `production`  |        |
-| `craftcms/nginx:7.4-dev`    | web | `development` |        |
-| `craftcms/nginx:7.3`        | web | `production`  |        |
-| `craftcms/nginx:7.3-dev`    | web | `development` |        |
-| `craftcms/nginx:7.2`        | web | `production`  | EOL    |
-| `craftcms/nginx:7.2-dev`    | web | `development` | EOL    |
-| `craftcms/nginx:7.1`        | web | `production`  | EOL    |
-| `craftcms/nginx:7.1-dev`    | web | `development` | EOL    |
-| `craftcms/nginx:7.0`        | web | `production`  | EOL    |
-| `craftcms/nginx:7.0-dev`    | web | `development` | EOL    |
+| Image                    | Use | Environment   | Status |
+| ------------------------ | --- | ------------- | ------ |
+| `craftcms/nginx:8.1`     | web | `production`  | RC     |
+| `craftcms/nginx:8.1-dev` | web | `development` | RC     |
+| `craftcms/nginx:8.0`     | web | `production`  |        |
+| `craftcms/nginx:8.0-dev` | web | `development` |        |
+| `craftcms/nginx:7.4`     | web | `production`  |        |
+| `craftcms/nginx:7.4-dev` | web | `development` |        |
+| `craftcms/nginx:7.3`     | web | `production`  |        |
+| `craftcms/nginx:7.3-dev` | web | `development` |        |
+| `craftcms/nginx:7.2`     | web | `production`  | EOL    |
+| `craftcms/nginx:7.2-dev` | web | `development` | EOL    |
+| `craftcms/nginx:7.1`     | web | `production`  | EOL    |
+| `craftcms/nginx:7.1-dev` | web | `development` | EOL    |
+| `craftcms/nginx:7.0`     | web | `production`  | EOL    |
+| `craftcms/nginx:7.0-dev` | web | `development` | EOL    |
 
 ### cli
 
@@ -66,22 +66,22 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 
 The image type `cli` which is used to run queues, migrations, etc. and the image does not expose ports for HTTP/S or PHP-FPM.
 
-| Image                     | Use | Environment   | Status |
-| ------------------------- | --- | ------------- | ------ |
-| `craftcms/cli:8.1-rc`     | web | `production`  | RC     |
-| `craftcms/cli:8.1-rc-dev` | web | `development` | RC     |
-| `craftcms/cli:8.0`        | web | `production`  |        |
-| `craftcms/cli:8.0-dev`    | web | `development` |        |
-| `craftcms/cli:7.4`        | web | `production`  |        |
-| `craftcms/cli:7.4-dev`    | web | `development` |        |
-| `craftcms/cli:7.3`        | web | `production`  |        |
-| `craftcms/cli:7.3-dev`    | web | `development` |        |
-| `craftcms/cli:7.2`        | web | `production`  | EOL    |
-| `craftcms/cli:7.2-dev`    | web | `development` | EOL    |
-| `craftcms/cli:7.1`        | web | `production`  | EOL    |
-| `craftcms/cli:7.1-dev`    | web | `development` | EOL    |
-| `craftcms/cli:7.0`        | web | `production`  | EOL    |
-| `craftcms/cli:7.0-dev`    | web | `development` | EOL    |
+| Image                  | Use | Environment   | Status |
+| ---------------------- | --- | ------------- | ------ |
+| `craftcms/cli:8.1`     | web | `production`  | RC     |
+| `craftcms/cli:8.1-dev` | web | `development` | RC     |
+| `craftcms/cli:8.0`     | web | `production`  |        |
+| `craftcms/cli:8.0-dev` | web | `development` |        |
+| `craftcms/cli:7.4`     | web | `production`  |        |
+| `craftcms/cli:7.4-dev` | web | `development` |        |
+| `craftcms/cli:7.3`     | web | `production`  |        |
+| `craftcms/cli:7.3-dev` | web | `development` |        |
+| `craftcms/cli:7.2`     | web | `production`  | EOL    |
+| `craftcms/cli:7.2-dev` | web | `development` | EOL    |
+| `craftcms/cli:7.1`     | web | `production`  | EOL    |
+| `craftcms/cli:7.1-dev` | web | `development` | EOL    |
+| `craftcms/cli:7.0`     | web | `production`  | EOL    |
+| `craftcms/cli:7.0-dev` | web | `development` | EOL    |
 
 ## Usage
 
