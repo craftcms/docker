@@ -19,8 +19,7 @@ RUN set -ex \
     nodejs \
     npm \
     postgresql-client \
-    # TODO: remove --force when pecl xdebug supports 8.1
-    && pecl install --force xdebug \
+    && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apk del --no-network .build-deps
 
