@@ -14,7 +14,6 @@ env:
 jobs:
   build-nginx-images:
       name: Build NGINX images
-      needs: build-php-images
       runs-on: ubuntu-latest
       strategy:
         fail-fast: ${{ github.event_name != 'release' }}
