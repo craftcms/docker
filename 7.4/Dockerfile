@@ -136,6 +136,9 @@ RUN mkdir -p /app
 # set the permissions on the
 RUN chown -R www-data:www-data /app
 
+# https://security.snyk.io/vuln/SNYK-ALPINE315-EXPAT-2407738
+RUN apk add --no-cache "expat>=2.4.5-r0"
+
 # set the working directory for conveinence
 WORKDIR /app
 
