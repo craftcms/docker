@@ -134,7 +134,7 @@ The image is designed to be run by a `www-data` user that owns of the image’s 
 
 ## Running Locally with Docker Compose
 
-We recommend running Docker locally if you’re shipping your project to a Docker-based envrionment such as Amazon Web Services Elastic Container Services (ECS). The following Docker Compose file will setup your local environment with the following:
+We recommend running Docker locally if you’re shipping your project to a Docker-based environment such as Amazon Web Services Elastic Container Services (ECS). The following Docker Compose file will setup your local environment with the following:
 
 1. `web` service that will handle running PHP and Nginx
 2. `postgres` service that will store your content
