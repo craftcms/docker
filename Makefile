@@ -1,6 +1,6 @@
 .PHONY: build snyk
 
-LOCAL_PHP_VERSION ?= 8.0
+LOCAL_PHP_VERSION ?= 8.1
 
 build: all-cli all-cli-dev all-php-fpm all-php-fpm-dev all-nginx all-nginx-dev
 snyk: snyk-all-cli snyk-all-cli-dev snyk-all-php-fpm snyk-all-php-fpm-dev snyk-all-nginx snyk-all-nginx-dev
