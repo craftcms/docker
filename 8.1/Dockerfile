@@ -55,6 +55,7 @@ RUN set -ex \
     $MOZJPEG_BUILD_DEPS \
     freetype-dev \
     icu-dev \
+    icu-data-full \
     libwebp-dev \
     imagemagick-dev \
     libjpeg-turbo-dev \
