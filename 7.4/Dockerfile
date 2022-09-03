@@ -1,7 +1,7 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
-FROM alpine:3.13 AS iconv-build
+FROM alpine:latest AS iconv-build
 RUN apk upgrade --no-cache \
     && apk add --no-cache gnu-libiconv
 
