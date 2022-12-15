@@ -19,6 +19,7 @@ RUN set -ex \
     nodejs \
     npm \
     postgresql-client \
+    linux-headers \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug \
     && apk del --no-network .build-deps
