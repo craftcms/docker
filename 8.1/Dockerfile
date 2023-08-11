@@ -5,7 +5,7 @@ FROM alpine:3.13 AS iconv-build
 RUN apk upgrade --no-cache \
     && apk add --no-cache gnu-libiconv
 
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.16
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.18
 
 # setup general options for environment variables
 ARG PHP_MEMORY_LIMIT_ARG="256M"
