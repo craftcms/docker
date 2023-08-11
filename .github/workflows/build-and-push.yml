@@ -210,9 +210,7 @@ jobs:
             NGINX_CONF=dev.default.conf
 
   bump_tag:
-    needs:
-      - build-php-images
-      - build-nginx-images
+    name: Bump Version Tag
     if: ${{ (github.event.schedule) || (github.event.workflow_dispatch) }}
     runs-on: ubuntu-latest
     steps:
