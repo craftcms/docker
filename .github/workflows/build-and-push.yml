@@ -211,7 +211,7 @@ jobs:
 
   bump_tag:
     name: Bump Version Tag
-    if: ${{ github.event_name != "push" }}
+    if: ${{ github.event_name != 'push' }}
     runs-on: ubuntu-latest
     steps:
       - name: Bump version and push tag
