@@ -210,6 +210,7 @@ jobs:
             NGINX_CONF=dev.default.conf
 
   bump_tag:
-    - name: Bump version and push tag
-      if: github.event.schedule
-      uses: mathieudutour/github-tag-action@v6.0
+    steps:
+      - name: Bump version and push tag
+        if: github.event.schedule
+        uses: mathieudutour/github-tag-action@v6.0
