@@ -215,7 +215,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "$GITHUB_EVENT_NAME"
-          echo "${{ toJSON(github.event) }}"
+          echo $GITHUB_EVENT_NAME
+          echo "${{ toJSON(github.event_name) }}"
 #      - name: Bump version and push tag
 #        uses: mathieudutour/github-tag-action@v6.0
