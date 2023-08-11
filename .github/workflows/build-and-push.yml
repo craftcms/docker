@@ -217,7 +217,7 @@ jobs:
     if: ${{ github.event_name != 'push' }}
     needs:
       - build-php-images
-      - nginx-php-images
+      - build-nginx-images
     runs-on: ubuntu-latest
     steps:
       - name: Bump version and push tag
