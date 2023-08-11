@@ -13,12 +13,6 @@ env:
   BUILD_PLATFORMS: linux/amd64, linux/arm64
 
 jobs:
-  echo:
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-          echo "${{ toJSON(github.event) }}"
-          echo "${{ toJSON(github.event_name) }}"
   build-php-images:
     name: Build PHP images
     runs-on: ubuntu-latest
@@ -224,4 +218,3 @@ jobs:
         uses: mathieudutour/github-tag-action@v6.0
         with:
           github_token: ${{ secrets.TAG_ACTION_TOKEN }}
-
