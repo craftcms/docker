@@ -210,8 +210,11 @@ jobs:
             NGINX_CONF=dev.default.conf
 
   bump_tag:
+    needs:
+      - build-php-images
+      - build-nginx-images
+    if: ${{ (github.event.schedule) || (github.event.workflow_dispatch) }}
     runs-on: ubuntu-latest
     steps:
       - name: Bump version and push tag
-        if: ${{ github.event.schedule || github.event.workflow_dispatch }}
         uses: mathieudutour/github-tag-action@v6.0
