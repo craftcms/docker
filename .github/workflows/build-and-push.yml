@@ -21,7 +21,6 @@ jobs:
           echo "${{ toJSON(github.event_name) }}"
   build-php-images:
     name: Build PHP images
-    if: github.event.push
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -124,7 +123,6 @@ jobs:
 
   build-nginx-images:
     name: Build NGINX images
-    if: github.event.push
     needs: build-php-images
     runs-on: ubuntu-latest
     strategy:
@@ -214,10 +212,12 @@ jobs:
           build-args: |
             PHP_VERSION=${{ env.BASE_DEV_IMAGE_TAG }}
             NGINX_CONF=dev.default.conf
-
   bump_tag:
     name: Bump Version Tag
     if: ${{ github.event_name != 'push' }}
+    needs:
+      - build-php-images
+      - nginx-php-images
     runs-on: ubuntu-latest
     steps:
       - name: Bump version and push tag
