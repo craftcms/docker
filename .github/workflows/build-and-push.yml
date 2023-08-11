@@ -13,6 +13,10 @@ env:
   BUILD_PLATFORMS: linux/amd64, linux/arm64
 
 jobs:
+  echo:
+    run: |
+      echo "{{ toJSON(github.event) }}"
+      echo "{{ toJSON(github.event_name) }}"
   build-php-images:
     name: Build PHP images
     if: github.event.push
