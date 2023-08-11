@@ -210,6 +210,7 @@ jobs:
             NGINX_CONF=dev.default.conf
 
   bump_tag:
+    runs-on: ubuntu-latest
     steps:
       - name: Bump version and push tag
         if: ${{ github.event.schedule || github.event.workflow_dispatch }}
