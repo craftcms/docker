@@ -211,8 +211,11 @@ jobs:
 
   bump_tag:
     name: Bump Version Tag
-    if: ${{ (github.event.schedule) || (github.event.workflow_dispatch) }}
+#    if: ${{ (github.event.schedule) || (github.event.workflow_dispatch) }}
     runs-on: ubuntu-latest
     steps:
-      - name: Bump version and push tag
-        uses: mathieudutour/github-tag-action@v6.0
+      - run: |
+          echo "$GITHUB_EVENT_NAME"
+          echo "${{ toJSON(github.event) }}"
+#      - name: Bump version and push tag
+#        uses: mathieudutour/github-tag-action@v6.0
