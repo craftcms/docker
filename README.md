@@ -4,9 +4,9 @@ These images are provided as a starting point for your Docker-based Craft CMS de
 
 ## Images
 
-There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:8.0`).
+There are three main "types" of images provided for different types of applications; `php-fpm`, `nginx`, and `cli`. Each image allows the developer to select a PHP version (e.g. `craftcms/nginx:8.2`).
 
-Each image and PHP version also provides a `-dev` variant which has Xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:8.0-dev`), as well as database tools for creating and restoring backups. Images that do not include `-dev` are considered production.
+Each image and PHP version also provides a `-dev` variant which has Xdebug installed and is useful for local development (e.g. `craftcms/php-fpm:8.2-dev`), as well as database tools for creating and restoring backups. Images that do not include `-dev` are considered production.
 
 > Note: you are not required to use `-dev` images for local development, they are provided with Xdebug and to make debugging easier.
 
@@ -22,8 +22,10 @@ The `php-fpm` image is provided as the base image (and is also used for the `ngi
 
 | Image                      | Use | Environment   | Status |
 | -------------------------- | --- | ------------- | ------ |
-| `craftcms/php-fpm:8.1`     | web | `production`  | RC     |
-| `craftcms/php-fpm:8.1-dev` | web | `development` | RC     |
+| `craftcms/php-fpm:8.2`     | web | `production`  |        |
+| `craftcms/php-fpm:8.2-dev` | web | `development` |        |
+| `craftcms/php-fpm:8.1`     | web | `production`  |        |
+| `craftcms/php-fpm:8.1-dev` | web | `development` |        |
 | `craftcms/php-fpm:8.0`     | web | `production`  |        |
 | `craftcms/php-fpm:8.0-dev` | web | `development` |        |
 | `craftcms/php-fpm:7.4`     | web | `production`  |        |
@@ -45,8 +47,10 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 
 | Image                    | Use | Environment   | Status |
 | ------------------------ | --- | ------------- | ------ |
-| `craftcms/nginx:8.1`     | web | `production`  | RC     |
-| `craftcms/nginx:8.1-dev` | web | `development` | RC     |
+| `craftcms/nginx:8.2`     | web | `production`  |        |
+| `craftcms/nginx:8.2-dev` | web | `development` |        |
+| `craftcms/nginx:8.1`     | web | `production`  |        |
+| `craftcms/nginx:8.1-dev` | web | `development` |        |
 | `craftcms/nginx:8.0`     | web | `production`  |        |
 | `craftcms/nginx:8.0-dev` | web | `development` |        |
 | `craftcms/nginx:7.4`     | web | `production`  |        |
@@ -68,8 +72,10 @@ The image type `cli` which is used to run queues, migrations, etc. and the image
 
 | Image                  | Use | Environment   | Status |
 | ---------------------- | --- | ------------- | ------ |
-| `craftcms/cli:8.1`     | web | `production`  | RC     |
-| `craftcms/cli:8.1-dev` | web | `development` | RC     |
+| `craftcms/cli:8.2`     | web | `production`  |        |
+| `craftcms/cli:8.2-dev` | web | `development` |        |
+| `craftcms/cli:8.1`     | web | `production`  |        |
+| `craftcms/cli:8.1-dev` | web | `development` |        |
 | `craftcms/cli:8.0`     | web | `production`  |        |
 | `craftcms/cli:8.0-dev` | web | `development` |        |
 | `craftcms/cli:7.4`     | web | `production`  |        |
@@ -96,7 +102,7 @@ COPY composer.json composer.json
 COPY composer.lock composer.lock
 RUN composer install --ignore-platform-reqs --no-interaction --prefer-dist
 
-FROM craftcms/php-fpm:8.0
+FROM craftcms/php-fpm:8.2
 
 # the user is `www-data`, so we copy the files using the user and group
 COPY --chown=www-data:www-data --from=vendor /app/vendor/ /app/vendor/
@@ -114,7 +120,7 @@ COPY composer.json composer.json
 COPY composer.lock composer.lock
 RUN composer install --ignore-platform-reqs --no-interaction --prefer-dist
 
-FROM craftcms/nginx:8.0
+FROM craftcms/nginx:8.2
 
 # switch to the root user to install mysql tools
 USER root
@@ -145,7 +151,7 @@ We recommend running Docker locally if you’re shipping your project to a Docke
 version: "3.6"
 services:
   console:
-    image: craftcms/cli:8.0-dev
+    image: craftcms/cli:8.2-dev
     env_file: .env
     environment:
       XDEBUG_CONFIG: client_host=host.docker.internal
@@ -159,7 +165,7 @@ services:
     command: php craft queue/listen
 
   web:
-    image: craftcms/nginx:8.0-dev
+    image: craftcms/nginx:8.2-dev
     ports:
       - 8080:8080
     env_file: .env
@@ -208,10 +214,10 @@ This can be done via environment variable: `XDEBUG_CONFIG=client_host=host.docke
 
 ## Installing Extensions
 
-This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 8.0. Note that it switches back to `www-data` after installation:
+This image is based off the [official Docker PHP FPM image](https://hub.docker.com/_/php) (Alpine Linux). Therefore you can use all of the tools to install PHP extensions. To install an extension, you have to switch to the `root` user. This example switches to the `root` user to install the [`sockets` extension](https://www.php.net/manual/en/book.sockets.php) for PHP 8.2. Note that it switches back to `www-data` after installation:
 
 ```dockerfile
-FROM craftcms/php-fpm:8.0
+FROM craftcms/php-fpm:8.2
 
 # switch to the root user
 USER root
@@ -233,7 +239,7 @@ In this example, we’re setting the PHP memory limit to `512M` rather than the 
 version: "3.6"
 services:
   php-fpm:
-    image: craftcms/php-fpm:8.0-dev
+    image: craftcms/php-fpm:8.2-dev
     volumes:
       - .:/app
     env_file: .env
