@@ -17,8 +17,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo "{{ toJSON(github.event) }}"
-          echo "{{ toJSON(github.event_name) }}"
+          echo "${{ toJSON(github.event) }}"
+          echo "${{ toJSON(github.event_name) }}"
   build-php-images:
     name: Build PHP images
     if: github.event.push
