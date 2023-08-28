@@ -125,12 +125,6 @@ RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
 
-# copy the blackfire script
-COPY blackfire-install.sh /tmp/blackfire-install.sh
-
-# run the installation script
-RUN set -ex && sh /tmp/blackfire-install.sh && rm -rf /tmp/blackfire*
-
 # make the directories and set permissions
 RUN mkdir -p /app
 
