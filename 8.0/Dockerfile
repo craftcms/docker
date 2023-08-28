@@ -137,7 +137,7 @@ RUN mkdir -p /app
 # set the permissions on the
 RUN chown -R www-data:www-data /app
 
-# set the working directory for conveinence
+# set the working directory for convenience
 WORKDIR /app
 
 # run container as the www-data user
