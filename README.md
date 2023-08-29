@@ -28,10 +28,10 @@ The `php-fpm` image is provided as the base image (and is also used for the `ngi
 | `craftcms/php-fpm:8.1-dev` | web | `development` |        |
 | `craftcms/php-fpm:8.0`     | web | `production`  |        |
 | `craftcms/php-fpm:8.0-dev` | web | `development` |        |
-| `craftcms/php-fpm:7.4`     | web | `production`  |        |
-| `craftcms/php-fpm:7.4-dev` | web | `development` |        |
-| `craftcms/php-fpm:7.3`     | web | `production`  |        |
-| `craftcms/php-fpm:7.3-dev` | web | `development` |        |
+| `craftcms/php-fpm:7.4`     | web | `production`  | EOL    |
+| `craftcms/php-fpm:7.4-dev` | web | `development` | EOL    |
+| `craftcms/php-fpm:7.3`     | web | `production`  | EOL    |
+| `craftcms/php-fpm:7.3-dev` | web | `development` | EOL    |
 | `craftcms/php-fpm:7.2`     | web | `production`  | EOL    |
 | `craftcms/php-fpm:7.2-dev` | web | `development` | EOL    |
 | `craftcms/php-fpm:7.1`     | web | `production`  | EOL    |
@@ -53,10 +53,10 @@ The `nginx` image is used for a typical installation and includes an Nginx serve
 | `craftcms/nginx:8.1-dev` | web | `development` |        |
 | `craftcms/nginx:8.0`     | web | `production`  |        |
 | `craftcms/nginx:8.0-dev` | web | `development` |        |
-| `craftcms/nginx:7.4`     | web | `production`  |        |
-| `craftcms/nginx:7.4-dev` | web | `development` |        |
-| `craftcms/nginx:7.3`     | web | `production`  |        |
-| `craftcms/nginx:7.3-dev` | web | `development` |        |
+| `craftcms/nginx:7.4`     | web | `production`  | EOL    |
+| `craftcms/nginx:7.4-dev` | web | `development` | EOL    |
+| `craftcms/nginx:7.3`     | web | `production`  | EOL    |
+| `craftcms/nginx:7.3-dev` | web | `development` | EOL    |
 | `craftcms/nginx:7.2`     | web | `production`  | EOL    |
 | `craftcms/nginx:7.2-dev` | web | `development` | EOL    |
 | `craftcms/nginx:7.1`     | web | `production`  | EOL    |
@@ -78,10 +78,10 @@ The image type `cli` which is used to run queues, migrations, etc. and the image
 | `craftcms/cli:8.1-dev` | web | `development` |        |
 | `craftcms/cli:8.0`     | web | `production`  |        |
 | `craftcms/cli:8.0-dev` | web | `development` |        |
-| `craftcms/cli:7.4`     | web | `production`  |        |
-| `craftcms/cli:7.4-dev` | web | `development` |        |
-| `craftcms/cli:7.3`     | web | `production`  |        |
-| `craftcms/cli:7.3-dev` | web | `development` |        |
+| `craftcms/cli:7.4`     | web | `production`  | EOL    |
+| `craftcms/cli:7.4-dev` | web | `development` | EOL    |
+| `craftcms/cli:7.3`     | web | `production`  | EOL    |
+| `craftcms/cli:7.3-dev` | web | `development` | EOL    |
 | `craftcms/cli:7.2`     | web | `production`  | EOL    |
 | `craftcms/cli:7.2-dev` | web | `development` | EOL    |
 | `craftcms/cli:7.1`     | web | `production`  | EOL    |
