@@ -11,7 +11,7 @@ all-cli:
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:8.2 8.2
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
-		--build-arg PHP_VERSION=8.2 \
+		--build-arg PHP_VERSION=8.1 \
 		--build-arg PROJECT_TYPE=cli \
 		-t craftcms/cli:8.1 8.1
 	docker buildx build --load --platform linux/amd64 --builder all-platforms \
