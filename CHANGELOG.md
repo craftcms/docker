@@ -1,5 +1,10 @@
 # Release Notes for Craft CMS Docker Images
 
+## 2.0.0 - 2023-09-03
+
+- Removed Blackfire by popular demand [#83](https://github.com/craftcms/docker/pull/83/files) (thanks @jawys)
+- Fixed nginx logs permission error [#74](https://github.com/craftcms/docker/pull/74)
+
 ## 1.3.3 - 2021-08-13
 
 ### Fixed
