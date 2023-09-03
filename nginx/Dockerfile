@@ -16,7 +16,7 @@ RUN touch /run/nginx.pid
 RUN touch /run/supervisord.pid
 RUN chown www-data /run/nginx.pid
 RUN chown www-data /run/supervisord.pid
-RUN chown -R www-data:www-data /var/lib/nginx/logs/
+RUN chown -R www-data:www-data /var/lib/nginx/
 USER www-data
 
 EXPOSE 8080
