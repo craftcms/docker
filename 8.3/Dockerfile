@@ -38,10 +38,11 @@ ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
 # MozJPEG
-ENV MOZJPEG_VERSION="3.3.1"
+ENV MOZJPEG_VERSION="4.1.1"
 ENV MOZJPEG_BUILD_DEPS \
     autoconf \
     automake \
+    cmake \
     build-base \
     libtool \
     nasm \
@@ -70,7 +71,9 @@ RUN set -ex \
     libjpeg-turbo-utils \
     libwebp-tools \
     optipng \
+    libpng-static \
     pngquant \
+    zlib-static \
     && docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
@@ -108,9 +111,7 @@ ADD https://github.com/mozilla/mozjpeg/archive/v${MOZJPEG_VERSION}.tar.gz ./
 RUN set -ex \
     && tar -xzf v${MOZJPEG_VERSION}.tar.gz \
     && cd ./mozjpeg-${MOZJPEG_VERSION} \
-    && autoreconf -fiv \
-    && ./configure --with-jpeg8 \
-    && make \
+    && cmake -DCMAKE_BUILD_TYPE=Release . \
     && make install
 
 RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
