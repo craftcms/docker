@@ -86,11 +86,15 @@ RUN set -ex \
     soap \
     zip \
     && pecl install \
-    imagick \
     redis \
     && docker-php-ext-enable \
-    imagick \
     redis
+
+# Install imagick from master because there's no tagged release in PECL yet with fixes for PHP 8.3
+# https://github.com/Imagick/imagick/issues/640
+# Workaround from https://github.com/yiisoft/yii2-docker/compare/324f7e8a36b394d637f1b327d474597b8a49f7de...master
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+RUN install-php-extensions imagick/imagick@master
 
 # https://github.com/craftcms/docker/issues/16
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
