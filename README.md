@@ -1,5 +1,7 @@
 # Craft Docker Images
 
+> _Note_: We are going to deprecate these images and archive this repository. Please see [this issue](https://github.com/craftcms/docker/issues/93) for additional details. New images are located at [craftcms/image](https://github.com/craftcms/image).
+
 These images are provided as a starting point for your Docker-based Craft CMS deployments. They’re discrete, lightweight, and pre-configured to meet Craft’s requirements in production and development environments.
 
 ## Images
