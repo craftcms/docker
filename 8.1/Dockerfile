@@ -1,10 +1,6 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
-FROM alpine:3.13 AS iconv-build
-RUN apk upgrade --no-cache \
-    && apk add --no-cache gnu-libiconv
-
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.18
 
 # setup general options for environment variables
@@ -71,6 +67,7 @@ RUN set -ex \
     libwebp-tools \
     optipng \
     pngquant \
+    gnu-libiconv \
     && docker-php-ext-configure gd \
     --with-freetype \
     --with-jpeg \
@@ -91,12 +88,6 @@ RUN set -ex \
     && docker-php-ext-enable \
     imagick \
     redis
-
-# https://github.com/craftcms/docker/issues/16
-COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
-
-# https://github.com/docker-library/php/issues/1121
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
 
 # MozJPEG
 WORKDIR /tmp
