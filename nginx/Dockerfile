@@ -12,11 +12,11 @@ COPY craftcms/general.conf /etc/nginx/craftcms/
 COPY craftcms/php_fastcgi.conf /etc/nginx/craftcms/
 COPY craftcms/security.conf /etc/nginx/craftcms/
 COPY ${NGINX_CONF} /etc/nginx/conf.d/default.conf
-RUN touch /run/nginx.pid
-RUN touch /run/supervisord.pid
-RUN chown www-data /run/nginx.pid
-RUN chown www-data /run/supervisord.pid
-RUN chown -R www-data:www-data /var/lib/nginx/
+RUN touch /run/nginx.pid \
+    && touch /run/supervisord.pid \
+    && chown www-data /run/nginx.pid \
+    && chown www-data /run/supervisord.pid \
+    && chown -R www-data:www-data /var/lib/nginx/
 USER www-data
 
 EXPOSE 8080
