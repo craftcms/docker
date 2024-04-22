@@ -1,7 +1,7 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
-FROM alpine:3.19 AS mozjpeg-build
+FROM alpine:3.18 AS mozjpeg-build
 ENV MOZJPEG_VERSION="3.3.1"
 
 ADD https://github.com/mozilla/mozjpeg/archive/v${MOZJPEG_VERSION}.tar.gz ./
@@ -96,16 +96,8 @@ RUN set -ex \
     redis \
     && docker-php-ext-enable \
     imagick \
-    redis
-
-# MozJPEG
-COPY --from=mozjpeg-build /opt/mozjpeg/bin/jpegtran /opt/mozjpeg/bin/jpegtran
-COPY --from=mozjpeg-build /opt/mozjpeg/bin/cjpeg /opt/mozjpeg/bin/cjpeg
-RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran \
-    && ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
-
-# Cleanup
-RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
+    redis \
+    && RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
     | awk '{ gsub(/,/, "\nso:", $2); print "so:" $2 }' \
     | sort -u \
     | xargs -r apk info --installed \
@@ -113,6 +105,12 @@ RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
     && apk add --no-cache --virtual .runtime-deps $RUNTIME_DEPS \
     && apk del --no-network .build-deps \
     && rm -rf /tmp/*
+
+# MozJPEG
+COPY --from=mozjpeg-build /opt/mozjpeg/bin/jpegtran /opt/mozjpeg/bin/jpegtran
+COPY --from=mozjpeg-build /opt/mozjpeg/bin/cjpeg /opt/mozjpeg/bin/cjpeg
+RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran \
+    && ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
 # copy custom.ini settings
 COPY craft-cms.ini /usr/local/etc/php/conf.d/
