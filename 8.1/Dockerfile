@@ -1,6 +1,27 @@
 ARG PHP_VERSION
 ARG PROJECT_TYPE
 
+FROM alpine:3.19 AS mozjpeg-build
+ENV MOZJPEG_VERSION="3.3.1"
+
+ADD https://github.com/mozilla/mozjpeg/archive/v${MOZJPEG_VERSION}.tar.gz ./
+RUN set -ex \
+  && apk upgrade --no-cache \
+  && apk add --no-cache --virtual .build-deps \
+    autoconf \
+    automake \
+    build-base \
+    libtool \
+    nasm \
+    pkgconf \
+    tar \
+  && tar -xzf v${MOZJPEG_VERSION}.tar.gz \
+  && cd ./mozjpeg-${MOZJPEG_VERSION} \
+  && autoreconf -fiv \
+  && ./configure --with-jpeg8 \
+  && make \
+  && make install
+
 FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.18
 
 # setup general options for environment variables
@@ -33,22 +54,10 @@ ENV PHP_OPCACHE_MAX_WASTED_PERCENTAGE=$PHP_OPCACHE_MAX_WASTED_PERCENTAGE_ARG
 ENV PHP_OPCACHE_INTERNED_STRINGS_BUFFER=$PHP_OPCACHE_INTERNED_STRINGS_BUFFER_ARG
 ENV PHP_OPCACHE_FAST_SHUTDOWN=$PHP_OPCACHE_FAST_SHUTDOWN_ARG
 
-# MozJPEG
-ENV MOZJPEG_VERSION="3.3.1"
-ENV MOZJPEG_BUILD_DEPS \
-    autoconf \
-    automake \
-    build-base \
-    libtool \
-    nasm \
-    pkgconf \
-    tar
-
 RUN set -ex \
     && apk upgrade --no-cache \
     && apk add --no-cache --virtual .build-deps \
     $PHPIZE_DEPS \
-    $MOZJPEG_BUILD_DEPS \
     freetype-dev \
     icu-dev \
     icu-data-full \
@@ -90,18 +99,10 @@ RUN set -ex \
     redis
 
 # MozJPEG
-WORKDIR /tmp
-ADD https://github.com/mozilla/mozjpeg/archive/v${MOZJPEG_VERSION}.tar.gz ./
-RUN set -ex \
-    && tar -xzf v${MOZJPEG_VERSION}.tar.gz \
-    && cd ./mozjpeg-${MOZJPEG_VERSION} \
-    && autoreconf -fiv \
-    && ./configure --with-jpeg8 \
-    && make \
-    && make install
-
-RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran
-RUN ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
+COPY --from=mozjpeg-build /opt/mozjpeg/bin/jpegtran /opt/mozjpeg/bin/jpegtran
+COPY --from=mozjpeg-build /opt/mozjpeg/bin/cjpeg /opt/mozjpeg/bin/cjpeg
+RUN ln -s /opt/mozjpeg/bin/jpegtran /usr/local/bin/mozjpegtran \
+    && ln -s /opt/mozjpeg/bin/cjpeg /usr/local/bin/mozcjpeg
 
 # Cleanup
 RUN RUNTIME_DEPS="$(scanelf --needed --nobanner --recursive /usr/local \
