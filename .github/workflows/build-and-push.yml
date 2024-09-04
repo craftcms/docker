@@ -197,6 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Bump version and push tag
-        uses: mathieudutour/github-tag-action@v6.0
+        uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.TAG_ACTION_TOKEN }}
+          tag_prefix: ""
