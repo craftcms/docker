@@ -82,7 +82,7 @@ jobs:
             PROJECT_TYPE=${{ matrix.type_short }}
             PHP_VERSION=${{ matrix.php }}
 
-      - name: Build development image for Snyk test
+      - name: Build development image
         uses: docker/build-push-action@v2
         with:
           context: ${{ matrix.php }}
@@ -93,15 +93,6 @@ jobs:
           build-args: |
             PROJECT_TYPE=${{ matrix.type }}
             PHP_VERSION=${{ matrix.php }}
-
-      - name: Snyk test development image
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ env.DEV_IMAGE_REF }}
-          args: --file=${{ env.DEV_DOCKERFILE }}
 
       - name: Build & push development image
         uses: docker/build-push-action@v2
@@ -176,7 +167,7 @@ jobs:
           build-args: |
             PHP_VERSION=${{ env.BASE_PROD_IMAGE_TAG }}
 
-      - name: Build development image for Snyk test
+      - name: Build development image
         uses: docker/build-push-action@v2
         with:
           context: nginx
@@ -186,15 +177,6 @@ jobs:
           build-args: |
             PHP_VERSION=${{ env.BASE_DEV_IMAGE_TAG }}
             NGINX_CONF=dev.default.conf
-
-      - name: Snyk test development image
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_CFG_ORG: ${{ secrets.SNYK_CFG_ORG }}
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        with:
-          image: ${{ env.DEV_IMAGE_REF }}
-          args: --file=nginx/Dockerfile
 
       - name: Build & push development image
         uses: docker/build-push-action@v2

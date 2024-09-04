@@ -5,7 +5,7 @@ FROM alpine:3.13 AS iconv-build
 RUN apk upgrade --no-cache \
     && apk add --no-cache gnu-libiconv
 
-FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.18
+FROM php:${PHP_VERSION}-${PROJECT_TYPE}-alpine3.20
 
 # setup general options for environment variables
 ARG PHP_MEMORY_LIMIT_ARG="256M"
@@ -96,7 +96,7 @@ RUN set -ex \
 COPY --from=iconv-build /usr/lib/preloadable_libiconv.so /usr/lib/preloadable_libiconv.so
 
 # https://github.com/docker-library/php/issues/1121
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so
+ENV LD_PRELOAD=usr/lib/preloadable_libiconv.so
 
 # MozJPEG
 WORKDIR /tmp
