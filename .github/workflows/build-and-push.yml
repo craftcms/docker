@@ -2,8 +2,8 @@ name: Build and push Docker images
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "30 2 * * *"  # Runs at 02:30 UTC every day
+#  schedule:
+#    - cron: "30 2 * * *"  # Runs at 02:30 UTC every day
   push:
     tags:
       - "*.*.*"
